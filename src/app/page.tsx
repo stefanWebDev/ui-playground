@@ -1,9 +1,14 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-     Main
+    <div className="font-sans p-8 flex flex-col gap-8">
+      <h2 className="text-lg">UI Components:</h2>
+      <div className="flex flex-col gap-2">
+        <Link href="/auth/signup">Signup</Link>
+        <Link href="/auth/signin">Sign in</Link>
+      </div>
     </div>
   );
 }

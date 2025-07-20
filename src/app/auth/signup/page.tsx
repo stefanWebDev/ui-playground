@@ -4,6 +4,7 @@ import { useFormData } from "@/components/form/hook";
 import Input from "@/components/form/Input";
 import { FormDataUser } from "@/components/form/interface";
 import { useMutation } from "@tanstack/react-query";
+import Link from "next/link";
 import { FormEvent } from "react";
 
 
@@ -11,23 +12,23 @@ export default function Signup() {
   const [formData, setFormField] = useFormData();
 
   const mutation = useMutation({
-      mutationFn: async (data: FormDataUser) => {
+    mutationFn: async (data: FormDataUser) => {
 
-        const response = await fetch("/api/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+      const response = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
 
-        return response.json();
-      },
-    });
+      return response.json();
+    },
+  });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -36,20 +37,22 @@ export default function Signup() {
   }
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      Signup
+     <div className="font-sans p-8 flex flex-col gap-4 items-center">
 
+      <Link href="/">Back</Link>
+
+      <h2 className="text-xl">Signup</h2>
       <form onSubmit={handleSubmit} className="w-full max-w-md">
-        <Input onChange={(e) => setFormField("surname", e.target.value)} label="Surname" />
-        <Input onChange={(e) => setFormField("name", e.target.value)}  label="Name" />
-        <Input onChange={(e) => setFormField("city", e.target.value)}  label="City" />
-        <Input onChange={(e) => setFormField("address", e.target.value)}  label="Address" />
-        <Input onChange={(e) => setFormField("email", e.target.value)}  label="Email" />
-        <Input onChange={(e) => setFormField("password", e.target.value)}  label="Password" />
+        <Input id="surname" type="text" onChange={(e) => setFormField("surname", e.target.value)} label="Surname" />
+        <Input id="name" type="text" onChange={(e) => setFormField("name", e.target.value)} label="Name" />
+        <Input id="city" type="text" onChange={(e) => setFormField("city", e.target.value)} label="City" />
+        <Input id="address" type="text" onChange={(e) => setFormField("address", e.target.value)} label="Address" />
+        <Input id="email" type="text" onChange={(e) => setFormField("email", e.target.value)} label="Email" />
+        <Input id="password" type="text" onChange={(e) => setFormField("password", e.target.value)} label="Password" />
 
         <button
           type="submit"
-          className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+          className="hover:shadow-lg cursor-pointer mt-4 w-full bg-[var(--accent-color)] text-white py-2 px-4 rounded"
         >
           Sign Up
         </button>

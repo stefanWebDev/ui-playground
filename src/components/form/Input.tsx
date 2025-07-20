@@ -1,7 +1,6 @@
 "use client";
 
 import { InputHTMLAttributes } from "react";
-import { useFormData } from "./hook";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -12,10 +11,9 @@ const Input = (props: InputProps) => {
      const { label, ...rest } = props;
 
     return (
-       <div> 
-           <label >{label}</label>
-            <input {...rest}>
-        </input>
+       <div className="flex flex-col gap-1"> 
+           <label htmlFor={props.id} >{label}</label>
+            <input className="bg-[#f9f6f0] border-2 border-[var(--chocolate)] rounded-md" {...rest} />
        </div>
 
     );
