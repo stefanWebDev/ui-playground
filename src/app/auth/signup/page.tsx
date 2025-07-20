@@ -42,7 +42,7 @@ export default function Signup() {
       <Link href="/">Back</Link>
 
       <h2 className="text-xl">Signup</h2>
-      <form onSubmit={handleSubmit} className="w-full max-w-md">
+      <form onSubmit={handleSubmit} className="w-full max-w-md gap-2 flex flex-col">
         <Input id="surname" type="text" onChange={(e) => setFormField("surname", e.target.value)} label="Surname" />
         <Input id="name" type="text" onChange={(e) => setFormField("name", e.target.value)} label="Name" />
         <Input id="city" type="text" onChange={(e) => setFormField("city", e.target.value)} label="City" />

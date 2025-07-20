@@ -13,7 +13,7 @@ const Input = (props: InputProps) => {
     return (
        <div className="flex flex-col gap-1"> 
            <label htmlFor={props.id} >{label}</label>
-            <input className="bg-[#f9f6f0] border-2 border-[var(--chocolate)] rounded-md" {...rest} />
+            <input className="h-8 p-4 bg-[#f9f6f0] border-2 border-[var(--chocolate)] rounded-md" {...rest} />
        </div>
 
     );

@@ -45,7 +45,7 @@ export default function Login() {
 
       <h2 className="text-xl">Signin</h2>
 
-      <form onSubmit={handleSubmit} className="w-full max-w-md">
+      <form onSubmit={handleSubmit} className="w-full max-w-md gap-2 flex flex-col">
         <Input id="email" type="text" onChange={(e) => setFormField("email", e.target.value)} label="Email" />
         <Input id="password" type="text" onChange={(e) => setFormField("password", e.target.value)} label="Password" />
 
