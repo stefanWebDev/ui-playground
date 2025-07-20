@@ -1,8 +1,8 @@
 "use client";
 
-import { useFormData } from "@/components/form/hook";
+import { useFormData } from "@/hooks/hook";
 import Input from "@/components/form/Input";
-import { FormDataUser } from "@/components/form/interface";
+import { FormDataUser } from "@/types/interface";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { FormEvent } from "react";
