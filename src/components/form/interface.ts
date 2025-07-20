@@ -1,6 +1,6 @@
 
 
-export interface FormData {
+export interface FormDataUser {
     surname?: string;
     name?: string;
     city?: string;
