@@ -1,17 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { FormData } from "./interface";
+import { FormDataUser } from "./interface";
 
-type FormDataKey = keyof FormData;
+type FormDataKey = keyof FormDataUser;
 
 export function useFormData() {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<FormDataUser>({
     email: "",
     password: "",
   });
 
-  function setField<K extends FormDataKey>(key: K, value: FormData[K]) {
+  function setField<K extends FormDataKey>(key: K, value: FormDataUser[K]) {
     setFormData(prev => ({
       ...prev,
       [key]: value,
