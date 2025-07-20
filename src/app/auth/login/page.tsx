@@ -1,3 +1,6 @@
+"use client";
+
+
 import { useFormData } from "@/components/form/hook";
 import Input from "@/components/form/Input";
 

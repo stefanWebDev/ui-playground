@@ -1,8 +1,9 @@
 "use client";
 
+import { InputHTMLAttributes } from "react";
 import { useFormData } from "./hook";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
 }
 
