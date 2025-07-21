@@ -7,14 +7,10 @@ interface DropShadowProps {
 const MAX_OFFSET = 30;
 const DROP_SHADOW_CLASS = "drop-shadow-effect";
 
-export const initDropShadow = (props: DropShadowProps) => {
-    const { element, abortController } = props;
-
+export const initDropShadow = ( {abortController, element}: DropShadowProps) => {
     addStyleSheet();
 
     element.classList.add(DROP_SHADOW_CLASS);
-
-
 
 
     element.style.setProperty('--shadowX', "0");
