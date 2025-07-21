@@ -15,7 +15,7 @@ export default function Signup() {
 
     mutationFn: async (data: FormDataUser) => {
 
-      const response = await fetch("/api/signup", {
+      const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +27,11 @@ export default function Signup() {
         throw new Error("Network response was not ok");
       }
 
-      return response.json();
+      const res =  await response.json();
+
+      console.log("Response from signup:", res);
+      
+      return res;
     },
   });
 
