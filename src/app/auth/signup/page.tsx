@@ -10,12 +10,12 @@ import { Form } from "@/components/form/Form";
 
 export default function Signup() {
   const [formData, setFormField] = useFormData();
-  
-  const mutation = useMutation({
+
+  const { mutate, data: responseData, error, isSuccess } = useMutation({
 
     mutationFn: async (data: FormDataUser) => {
 
-      const response = await fetch("/api/signup", {
+      const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,15 +27,19 @@ export default function Signup() {
         throw new Error("Network response was not ok");
       }
 
-      return response.json();
+      const res = await response.json();
+
+      return res;
     },
   });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    mutation.mutate(formData);
+    mutate(formData);
   }
+
+
 
   return (
     <div className="font-sans p-8 flex flex-col gap-4 items-center">
@@ -50,6 +54,19 @@ export default function Signup() {
         "email",
         "password"
       ]} />
+
+      {responseData?.error && (
+        <div className="text-red-500">
+         {responseData.error}
+        </div>
+      )}
+
+     {!error && !responseData?.error && isSuccess && (
+        <div className="text-green-500">
+         Data received successfully!
+        </div>
+      )}
+
     </div>
   );
 }
