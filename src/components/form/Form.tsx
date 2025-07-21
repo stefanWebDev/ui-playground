@@ -33,7 +33,6 @@ export const Form = ({ onSubmit, inputs, setFormField, button }: FormProps) => {
 
     return (
         <form onSubmit={onSubmit} className="w-full max-w-md gap-2 flex flex-col">
-
             {inputFields}
             <button
                 type="submit"
