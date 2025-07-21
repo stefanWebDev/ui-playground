@@ -39,8 +39,6 @@ export default function Signup() {
     mutate(formData);
   }
 
-
-
   return (
     <div className="font-sans p-8 flex flex-col gap-4 items-center">
 
@@ -57,13 +55,13 @@ export default function Signup() {
 
       {responseData?.error && (
         <div className="max-w-md text-red-500">
-         {responseData.error}
+          {responseData.error}
         </div>
       )}
 
-     {!error && !responseData?.error && isSuccess && (
+      {!error && !responseData?.error && isSuccess && (
         <div className="max-w-md text-green-500">
-         Data received successfully!
+          Data received successfully!
         </div>
       )}
 

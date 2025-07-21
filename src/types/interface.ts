@@ -7,7 +7,5 @@ export interface FormDataUser {
     email: string;
     password: string;
 }
-    
 
 export type FormDataKeys = (keyof FormDataUser)[];
-

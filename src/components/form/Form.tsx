@@ -13,7 +13,6 @@ interface FormProps {
 export const Form = ({ onSubmit, inputs, setFormField, button }: FormProps) => {
     const [abortController, setAbortController] = useState<AbortController | null>(null);
 
-
     const initShadow = (e: React.FocusEvent<HTMLInputElement>) => {
         const abortController = new AbortController();
         setAbortController(abortController);
@@ -42,5 +41,4 @@ export const Form = ({ onSubmit, inputs, setFormField, button }: FormProps) => {
             </button>
         </form>
     )
-
 }
