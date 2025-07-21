@@ -51,14 +51,14 @@ export default function Login() {
 
 
       {responseData?.error && (
-        <div className="text-red-500">
+        <div className="max-w-md text-red-500">
          {responseData.error}
         </div>
       )}
 
 
       {!error && !responseData?.error && isSuccess && (
-        <div className="text-green-500">
+        <div className="max-w-md text-green-500">
          Data received successfully!
         </div>
       )}
