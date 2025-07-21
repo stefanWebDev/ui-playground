@@ -7,11 +7,8 @@ import Link from "next/link";
 import { FormEvent } from "react";
 import { Form } from "@/components/form/Form";
 
-
-
 export default function Login() {
   const [formData, setFormField] = useFormData();
-  
 
   const { mutate, data: responseData, error, isSuccess } = useMutation({
     mutationFn: async (data: FormDataUser) => {
@@ -52,14 +49,14 @@ export default function Login() {
 
       {responseData?.error && (
         <div className="max-w-md text-red-500">
-         {responseData.error}
+          {responseData.error}
         </div>
       )}
 
 
       {!error && !responseData?.error && isSuccess && (
         <div className="max-w-md text-green-500">
-         Data received successfully!
+          Data received successfully!
         </div>
       )}
 

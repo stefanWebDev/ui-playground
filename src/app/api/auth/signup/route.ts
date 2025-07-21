@@ -6,5 +6,5 @@ export async function POST(request: NextRequest) {
 
     const parsed = FormDataUserSchema.safeParse(data);
 
-    return NextResponse.json({ message: 'Received!', error: parsed.error?.message});
+    return NextResponse.json({ message: 'Received!', error: parsed.error?.message });
 }
