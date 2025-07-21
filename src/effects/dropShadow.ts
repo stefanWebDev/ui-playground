@@ -58,7 +58,7 @@ export const destroyDropShadow = (props: DropShadowProps) => {
     }
 
     element.classList.remove(DROP_SHADOW_CLASS);
-    removeStyleSheet(element);
+    removeStyleSheet();
 
 }
 
