@@ -7,31 +7,25 @@ interface DropShadowProps {
 const MAX_OFFSET = 30;
 const DROP_SHADOW_CLASS = "drop-shadow-effect";
 
-export const initDropShadow = ( {abortController, element}: DropShadowProps) => {
+export const initDropShadow = ({ abortController, element }: DropShadowProps) => {
     addStyleSheet();
-
     element.classList.add(DROP_SHADOW_CLASS);
-
 
     element.style.setProperty('--shadowX', "0");
     element.style.setProperty('--shadowY', "0");
 
-    document.addEventListener("mousemove", (e) => {
+    let latestMouse: { x: number; y: number } | null = null;
+    let animationFrameId: number | null = null;
+
+    const updateShadow = () => {
+        if (!latestMouse) return;
 
         const inputRect = element.getBoundingClientRect();
+        const elementCenterX = inputRect.left + inputRect.width / 2;
+        const elementCenterY = inputRect.top + inputRect.height / 2;
 
-        const xElement = inputRect.left;
-        const yElement = inputRect.top;
-
-        const elementCenterX = xElement + inputRect.width / 2;
-        const elementCenterY = yElement + inputRect.height / 2;
-
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
-
-        let shadowX = elementCenterX - mouseX;
-        let shadowY = elementCenterY - mouseY;
-
+        let shadowX = elementCenterX - latestMouse.x;
+        let shadowY = elementCenterY - latestMouse.y;
 
         shadowX = Math.max(-MAX_OFFSET, Math.min(MAX_OFFSET, shadowX));
         shadowY = Math.max(-MAX_OFFSET, Math.min(MAX_OFFSET, shadowY));
@@ -39,11 +33,18 @@ export const initDropShadow = ( {abortController, element}: DropShadowProps) => 
         element.style.setProperty('--shadowX', shadowX.toString());
         element.style.setProperty('--shadowY', shadowY.toString());
 
+        animationFrameId = null;
+    };
 
-    }, { signal: abortController?.signal });
+    const onMouseMove = (e: MouseEvent) => {
+        latestMouse = { x: e.clientX, y: e.clientY };
+        if (animationFrameId === null) {
+            animationFrameId = requestAnimationFrame(updateShadow);
+        }
+    };
 
-
-}
+    document.addEventListener("mousemove", onMouseMove, { signal: abortController?.signal });
+};
 
 export const destroyDropShadow = (props: DropShadowProps) => {
 
