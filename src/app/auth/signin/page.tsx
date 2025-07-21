@@ -8,14 +8,15 @@ import { FormEvent } from "react";
 import { Form } from "@/components/form/Form";
 
 
-export default function Signup() {
+
+export default function Login() {
   const [formData, setFormField] = useFormData();
   
-  const mutation = useMutation({
 
+  const mutation = useMutation({
     mutationFn: async (data: FormDataUser) => {
 
-      const response = await fetch("/api/signup", {
+      const response = await fetch("/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,16 +38,13 @@ export default function Signup() {
     mutation.mutate(formData);
   }
 
+
   return (
     <div className="font-sans p-8 flex flex-col gap-4 items-center">
 
       <Link href="/">Back</Link>
 
-      <Form button="sign up" onSubmit={handleSubmit} setFormField={setFormField} inputs={[
-        "surname",
-        "name",
-        "city",
-        "address",
+      <Form button="sign in" onSubmit={handleSubmit} setFormField={setFormField} inputs={[
         "email",
         "password"
       ]} />
