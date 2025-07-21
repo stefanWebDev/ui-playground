@@ -7,5 +7,5 @@ export const FormDataUserSchema = z.object({
     city: z.string().optional(),
     address: z.string().optional(),
     email: z.string().trim().pipe(z.email().toLowerCase()),
-    password: z.string(),
+    password: z.string().min(1, { message: "Password is required" }),
 });

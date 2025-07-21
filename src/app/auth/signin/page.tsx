@@ -13,10 +13,10 @@ export default function Login() {
   const [formData, setFormField] = useFormData();
   
 
-  const mutation = useMutation({
+  const { mutate, data: responseData, error, isSuccess } = useMutation({
     mutationFn: async (data: FormDataUser) => {
 
-      const response = await fetch("/api/login", {
+      const response = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,7 +35,7 @@ export default function Login() {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    mutation.mutate(formData);
+    mutate(formData);
   }
 
 
@@ -48,6 +48,21 @@ export default function Login() {
         "email",
         "password"
       ]} />
+
+
+      {responseData?.error && (
+        <div className="text-red-500">
+         {responseData.error}
+        </div>
+      )}
+
+
+      {!error && !responseData?.error && isSuccess && (
+        <div className="text-green-500">
+         Data received successfully!
+        </div>
+      )}
+
     </div>
   );
 }

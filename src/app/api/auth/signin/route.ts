@@ -4,7 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
     const data = await request.json();
 
-    const parsed = FormDataUserSchema.parse(data);
+    const parsed = FormDataUserSchema.safeParse(data);
 
-    return NextResponse.json({ message: 'Received!', parsed });
+    //@todo fix deprecated
+    return NextResponse.json({ message: 'Received!', error: parsed.error?.message });
 }

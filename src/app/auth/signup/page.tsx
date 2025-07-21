@@ -10,8 +10,8 @@ import { Form } from "@/components/form/Form";
 
 export default function Signup() {
   const [formData, setFormField] = useFormData();
-  
-  const mutation = useMutation({
+
+  const { mutate, data: responseData, error, isSuccess } = useMutation({
 
     mutationFn: async (data: FormDataUser) => {
 
@@ -27,19 +27,26 @@ export default function Signup() {
         throw new Error("Network response was not ok");
       }
 
-      const res =  await response.json();
+      const res = await response.json();
 
-      console.log("Response from signup:", res);
-      
       return res;
     },
+    onError: (error) => {
+      console.error("Error during signup:", error);
+    },
+    onSuccess: (data) => {
+      console.log("Signup successful:", data);
+      // Handle success, e.g., redirect or show a success message
+    }
   });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    mutation.mutate(formData);
+    mutate(formData);
   }
+
+
 
   return (
     <div className="font-sans p-8 flex flex-col gap-4 items-center">
@@ -54,6 +61,19 @@ export default function Signup() {
         "email",
         "password"
       ]} />
+
+      {responseData?.error && (
+        <div className="text-red-500">
+         {responseData.error}
+        </div>
+      )}
+
+     {!error && !responseData?.error && isSuccess && (
+        <div className="text-green-500">
+         Data received successfully!
+        </div>
+      )}
+
     </div>
   );
 }
