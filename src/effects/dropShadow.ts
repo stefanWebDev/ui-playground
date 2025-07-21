@@ -15,10 +15,10 @@ export const initDropShadow = (props: DropShadowProps) => {
     element.classList.add(DROP_SHADOW_CLASS);
 
 
-    
 
-        element.style.setProperty('--shadowX', "0");
-        element.style.setProperty('--shadowY', "0");
+
+    element.style.setProperty('--shadowX', "0");
+    element.style.setProperty('--shadowY', "0");
 
     document.addEventListener("mousemove", (e) => {
 
@@ -50,9 +50,9 @@ export const initDropShadow = (props: DropShadowProps) => {
 }
 
 export const destroyDropShadow = (props: DropShadowProps) => {
-  
+
     const { abortController, element } = props;
-  console.log(abortController);
+
     if (abortController) {
         abortController.abort();
     }

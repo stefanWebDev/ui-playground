@@ -9,3 +9,5 @@ export interface FormDataUser {
     password: string;
 }
     
+
+export type FormDataKeys = (keyof FormDataUser)[];
