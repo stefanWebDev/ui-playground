@@ -7,9 +7,10 @@ interface FormProps {
     onSubmit: (e: FormEvent) => void;
     inputs: FormDataKeys;
     setFormField: (key: keyof FormDataUser, value: string) => void;
+    button: string;
 }
 
-export const Form = ({ onSubmit, inputs, setFormField }: FormProps) => {
+export const Form = ({ onSubmit, inputs, setFormField, button }: FormProps) => {
     const [abortController, setAbortController] = useState<AbortController | null>(null);
 
 
@@ -38,7 +39,7 @@ export const Form = ({ onSubmit, inputs, setFormField }: FormProps) => {
                 type="submit"
                 className="hover:shadow-lg cursor-pointer mt-4 w-full bg-[var(--accent-color)] text-white py-2 px-4 rounded"
             >
-                Sign Up
+                {button}
             </button>
         </form>
     )

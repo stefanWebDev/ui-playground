@@ -4,7 +4,7 @@ import { useFormData } from "@/hooks/hook";
 import { FormDataUser } from "@/types/interface";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { Form } from "@/components/form/Form";
 
 
@@ -44,9 +44,7 @@ export default function Login() {
 
       <Link href="/">Back</Link>
 
-      <h2 className="text-xl">Signin</h2>
-
-      <Form  onSubmit={handleSubmit} setFormField={setFormField} inputs={[
+      <Form button="sign in" onSubmit={handleSubmit} setFormField={setFormField} inputs={[
         "email",
         "password"
       ]} />

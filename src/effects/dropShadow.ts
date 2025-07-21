@@ -10,7 +10,7 @@ const DROP_SHADOW_CLASS = "drop-shadow-effect";
 export const initDropShadow = (props: DropShadowProps) => {
     const { element, abortController } = props;
 
-    addStyleSheet(element);
+    addStyleSheet();
 
     element.classList.add(DROP_SHADOW_CLASS);
 
@@ -62,7 +62,7 @@ export const destroyDropShadow = (props: DropShadowProps) => {
 
 }
 
-const addStyleSheet = (element: HTMLElement) => {
+const addStyleSheet = () => {
     const oldLink = document.querySelector('link[data-drop-shadow="true"]');
 
     if (oldLink) return;
@@ -75,7 +75,7 @@ const addStyleSheet = (element: HTMLElement) => {
 };
 
 
-const removeStyleSheet = (element: HTMLElement) => {
+const removeStyleSheet = () => {
     const link = document.querySelector('link[data-drop-shadow="true"]');
     if (link) {
         document.head.removeChild(link);

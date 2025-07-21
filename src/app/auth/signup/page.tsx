@@ -42,8 +42,7 @@ export default function Signup() {
 
       <Link href="/">Back</Link>
 
-      <h2 className="text-xl">Signup</h2>
-      <Form  onSubmit={handleSubmit} setFormField={setFormField} inputs={[
+      <Form button="sign up" onSubmit={handleSubmit} setFormField={setFormField} inputs={[
         "surname",
         "name",
         "city",
