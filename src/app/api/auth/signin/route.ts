@@ -6,6 +6,5 @@ export async function POST(request: NextRequest) {
 
     const parsed = FormDataUserSchema.safeParse(data);
 
-    //@todo fix deprecated
     return NextResponse.json({ message: 'Received!', error: parsed.error?.message });
 }

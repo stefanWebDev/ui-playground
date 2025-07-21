@@ -31,13 +31,6 @@ export default function Signup() {
 
       return res;
     },
-    onError: (error) => {
-      console.error("Error during signup:", error);
-    },
-    onSuccess: (data) => {
-      console.log("Signup successful:", data);
-      // Handle success, e.g., redirect or show a success message
-    }
   });
 
   const handleSubmit = (e: FormEvent) => {
