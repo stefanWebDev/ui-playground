@@ -4,7 +4,7 @@ interface DropShadowProps {
     element: HTMLElement;
 }
 
-const MAX_OFFSET = 30;
+const MAX_OFFSET = 15;
 const DROP_SHADOW_CLASS = "drop-shadow-effect";
 
 export const initDropShadow = ({ abortController, element }: DropShadowProps) => {
@@ -24,8 +24,11 @@ export const initDropShadow = ({ abortController, element }: DropShadowProps) =>
         const elementCenterX = inputRect.left + inputRect.width / 2;
         const elementCenterY = inputRect.top + inputRect.height / 2;
 
-        let shadowX = elementCenterX - latestMouse.x;
-        let shadowY = elementCenterY - latestMouse.y;
+        const percentX = (latestMouse.x - elementCenterX) / (inputRect.width / 2);
+        const percentY = (latestMouse.y - elementCenterY) / (inputRect.height / 2);
+
+        let shadowX = percentX * MAX_OFFSET;
+        let shadowY = percentY * MAX_OFFSET;
 
         shadowX = Math.max(-MAX_OFFSET, Math.min(MAX_OFFSET, shadowX));
         shadowY = Math.max(-MAX_OFFSET, Math.min(MAX_OFFSET, shadowY));
