@@ -1,0 +1,31 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Indentation
+indent_style = space
+indent_size = 2
+
+# Max line length for readability
+max_line_length = 100
+
+# Ensure consistent nesting and formatting for JS/TS/JSX/TSX
+[*.{js,jsx,ts,tsx}]
+indent_style = space
+indent_size = 2
+max_line_length = 100
+quote_type = double
+curly_bracket_next_line = false
+
+# HTML/CSS
+[*.{html,css,scss}]
+indent_style = space
+indent_size = 2
+
+# Markdown
+[*.md]
+trim_trailing_whitespace = false
