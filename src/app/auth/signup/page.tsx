@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormData } from "@/hooks/hook";
+import { useFormData } from "@/hooks/useFormData";
 import { FormDataUser } from "@/types/interface";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
