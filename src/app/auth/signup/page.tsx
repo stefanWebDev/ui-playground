@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Form } from "@/components/form/Form";
 
 export default function Signup() {
-  
+
   return (
     <div className="font-sans p-8 flex flex-col gap-4 items-center">
 
