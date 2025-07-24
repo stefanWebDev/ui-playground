@@ -64,11 +64,13 @@ export const Form = ({ inputs, button, type }: FormProps) => {
         {inputFields}
         <button
           type="submit"
-          className="hover:shadow-lg cursor-pointer mt-4 w-full bg-[var(--accent-color)] text-white py-2 px-4 rounded"
+          className="font-semibold opacity-90 hover:opacity-100 cursor-pointer mt-4 w-full bg-[var(--accent-color)] text-white py-2 px-4 rounded"
         >
           {button}
         </button>
       </form>
+
+    {/* todo: error messages only take zod validation into account, add general error feedback from tanstack mutation */}
 
       {responseData?.error && (
         <div className="max-w-md text-red-500">

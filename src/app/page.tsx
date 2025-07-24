@@ -8,8 +8,8 @@ export default function Home() {
         UI Components:
       </h1>
       <List items={[
-        { id: "1", label: "Sign up", link: "/auth/signup" },
-        { id: "2", label: "Sign in", link: "/auth/signin" },
+        { id: "1", label: "sign up", link: "/auth/signup" },
+        { id: "2", label: "sign in", link: "/auth/signin" },
       ]} />
     </div>
   );
