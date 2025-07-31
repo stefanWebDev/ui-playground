@@ -2,13 +2,14 @@
 
 :root {
   --background: #FFF6EA;
-  --chocolate: #411900;
+  --color: #411900;
   --accent-color: #A1DB92;
 }
 
 
+
 body {
   background: var(--background);
-  color: var(--chocolate);
+  color: var(--color);
   font-family: Arial, Helvetica, sans-serif;
 }
