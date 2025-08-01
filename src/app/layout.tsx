@@ -6,8 +6,6 @@ import QueryProvider from "@/providers/QueryProvider";
 import Beacon from "@/init/Beacon";
 import { cookies } from "next/headers";
 
-
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
