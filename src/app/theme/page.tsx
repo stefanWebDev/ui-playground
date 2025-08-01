@@ -25,7 +25,9 @@ export default function ThemeColor() {
   }, [theme, hydrated]);
 
   const onChange = (value: "light" | "dark") => {
-    setTheme(value);
+    document.startViewTransition(() => {
+       setTheme(value);
+    });
   };
 
   if (!hydrated) return null;
