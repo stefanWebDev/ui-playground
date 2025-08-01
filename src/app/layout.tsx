@@ -29,13 +29,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const themeInitScript = `
-  try {
-    var theme = localStorage.getItem("theme") || "light";
-    document.documentElement.setAttribute("data-theme", theme);
-  } catch(e) {}
-`;
-
 
   return (
     <html lang="en">
