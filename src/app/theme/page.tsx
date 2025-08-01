@@ -32,7 +32,7 @@ export default function ThemeColor() {
 
   return (
     <div className="font-sans p-8 flex flex-col gap-4 items-center">
-      <Link href="/">Back</Link>
+      <Link className="opacity-80 hover:opacity-100 " href="/">Back</Link>
       <Dropdown
         value={theme}
         onChange={(e) => onChange((e.target as HTMLSelectElement).value as "light" | "dark")}

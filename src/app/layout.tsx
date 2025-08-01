@@ -31,7 +31,6 @@ export default async function RootLayout({
   // retrieve cookies updated on theme change, need, otherwise client and ssr wont match and hydration error occurs
   const theme = (await cookies()).get("theme")?.value || "light";
 
-
   const themeInitScript = `
     try {
       var theme = localStorage.getItem("theme") || "${theme}";
