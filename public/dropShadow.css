@@ -1,3 +1,13 @@
+
+:root {
+  --color-shadow: rgba(60, 60, 60, 0.13);
+}
+
+[data-theme="dark"] {
+  --color-shadow: rgba(5, 165, 177, 0.35);
+}
+
+
 .drop-shadow-effect {
-    box-shadow: calc(var(--shadowX, 0) * 1px) calc(var(--shadowY, 0) * 1px) 40px 0px rgba(60, 60, 60, 0.13);
+    box-shadow: calc(var(--shadowX, 0) * 1px) calc(var(--shadowY, 0) * 1px) 40px 0px var(--color-shadow);
 }

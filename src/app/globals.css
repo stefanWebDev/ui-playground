@@ -3,13 +3,26 @@
 :root {
   --background: #FFF6EA;
   --color: #411900;
-  --accent-color: #A1DB92;
+  --accent-color: #2fb90d;
 }
 
 
+[data-theme="dark"] {
+  --background: #124D6A;
+  --color: #FFFFFF;
+  --accent-color: #2AD0CD;
+}
 
 body {
   background: var(--background);
   color: var(--color);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+select {
+  color: var(--color);
+}
+
+select option {
+  color: black;
 }

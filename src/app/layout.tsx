@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/providers/QueryProvider";
-import Beacon from "@/components/Beacon";
+import Beacon from "@/init/Beacon";
+import ThemeMode from "@/init/ThemeMode";
 
 
 const geistSans = Geist({
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ThemeMode />
         <Beacon />
         <QueryProvider>
           {children}
