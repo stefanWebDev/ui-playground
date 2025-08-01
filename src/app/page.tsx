@@ -1,5 +1,4 @@
 import { List } from "@/components/List";
-import Link from "next/link";
 
 export default function Home() {
   return (
@@ -11,6 +10,7 @@ export default function Home() {
         { id: "1", label: "sign up", link: "/auth/signup" },
         { id: "2", label: "sign in", link: "/auth/signin" },
         { id: "3", label: "change theme", link: "/theme" },
+        { id: "4", label: "modal", link: "/modal" },
       ]} />
     </div>
   );
