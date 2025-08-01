@@ -1,7 +1,7 @@
 import { destroyDropShadow, initDropShadow } from "@/effects/dropShadow";
 import { FormDataKeys, FormDataUser } from "@/types/interface";
 import { FormEvent, useState } from "react";
-import Input from "./Input";
+import Input from "../form/Input";
 import { useFormData } from "@/hooks/useFormData";
 import { useMutation } from "@tanstack/react-query";
 
