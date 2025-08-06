@@ -26,3 +26,8 @@ select {
 select option {
   color: black;
 }
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
