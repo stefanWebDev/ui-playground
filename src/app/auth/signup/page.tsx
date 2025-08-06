@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Form } from "@/components/auth-form/Form";
+import { Form } from "@/components/common/auth-form/Form";
 
 export default function Signup() {
 

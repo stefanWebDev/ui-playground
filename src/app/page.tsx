@@ -1,4 +1,4 @@
-import { List } from "@/components/List";
+import { List } from "@/components/custom/List";
 import Link from "next/link";
 
 export default function Home() {

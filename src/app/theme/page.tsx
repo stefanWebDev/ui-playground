@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Dropdown } from "@/components/form/Dropdown";
+import { Dropdown } from "@/components/custom/Dropdown";
 import Link from "next/link";
 
 export default function ThemeColor() {
