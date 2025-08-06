@@ -3,16 +3,17 @@
 import { useState, useEffect } from "react";
 import { Dropdown } from "@/components/custom/Dropdown";
 import Link from "next/link";
+import { getCookie, setCookie } from "@/utils/helpers/cookie";
 
 export default function ThemeColor() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("theme");
-    if (stored === "light" || stored === "dark") {
-      setTheme(stored);
-      document.documentElement.setAttribute("data-theme", stored);
+    const cookie = getCookie("theme");
+    if (cookie === "light" || cookie === "dark") {
+      setTheme(cookie);
+      document.documentElement.setAttribute("data-theme", cookie);
     }
     setHydrated(true);
   }, []);
@@ -20,13 +21,12 @@ export default function ThemeColor() {
   useEffect(() => {
     if (!hydrated) return;
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-    document.cookie = `theme=${theme}; path=/; max-age=31536000`;
+    setCookie("theme", theme, 365);
   }, [theme, hydrated]);
 
   const onChange = (value: "light" | "dark") => {
     document.startViewTransition(() => {
-       setTheme(value);
+      setTheme(value);
     });
   };
 
@@ -34,7 +34,9 @@ export default function ThemeColor() {
 
   return (
     <div className="font-sans p-8 flex flex-col gap-4 items-center">
-      <Link className="opacity-80 hover:opacity-100 " href="/">Back</Link>
+      <Link className="opacity-80 hover:opacity-100 " href="/">
+        Back
+      </Link>
       <Dropdown
         value={theme}
         onChange={(e) => onChange((e.target as HTMLSelectElement).value as "light" | "dark")}
