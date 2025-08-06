@@ -1,9 +1,9 @@
-import { destroyDropShadow, initDropShadow } from "@/effects/dropShadow";
+import { destroyDropShadow, initDropShadow } from "@/utils/effects/dropShadow";
 import { FormDataKeys, FormDataUser } from "@/types/interface";
 import { FormEvent, useState } from "react";
-import Input from "../form/Input";
-import { useFormData } from "@/hooks/useFormData";
+import Input from "./Input";
 import { useMutation } from "@tanstack/react-query";
+import { useFormData } from "@/utils/hooks/useFormData";
 
 interface FormProps {
   inputs: FormDataKeys;
@@ -16,9 +16,14 @@ export const Form = ({ inputs, button, type }: FormProps) => {
 
   const [formData, setFormField] = useFormData();
 
-  const { mutate, data: responseData, error, isSuccess } = useMutation({
+  const {
+    mutate,
+    data: responseData,
+    error,
+    isSuccess,
+    isPending
+  } = useMutation({
     mutationFn: async (data: FormDataUser) => {
-
       const response = await fetch(`/api/auth/${type}`, {
         method: "POST",
         headers: {
@@ -39,13 +44,13 @@ export const Form = ({ inputs, button, type }: FormProps) => {
     e.preventDefault();
 
     mutate(formData);
-  }
+  };
 
   const initShadow = (e: React.FocusEvent<HTMLInputElement>) => {
     const abortController = new AbortController();
     setAbortController(abortController);
     abortController && initDropShadow({ abortController, element: e.target });
-  }
+  };
 
   const inputFields = inputs.map((input) => (
     <Input
@@ -55,33 +60,39 @@ export const Form = ({ inputs, button, type }: FormProps) => {
       id={input}
       type="text"
       onChange={(e) => setFormField(input, e.target.value)}
-      label={input} />
+      label={input}
+    />
   ));
+
+  const errorData = JSON.parse(responseData?.error || "[]");
+  const errorMessage = errorData[0]?.message
 
   return (
     <div className="w-full max-w-md flex flex-col gap-4">
-      <form onSubmit={handleSubmit} className="gap-2 flex flex-col">
+      <form
+        onSubmit={handleSubmit}
+        className="rounded-lg p-4 gap-2 flex flex-col border border-transparent focus-within:border-[var(--accent-color)]"
+      >
         {inputFields}
         <button
+          disabled={isPending}
           type="submit"
           className="font-semibold opacity-90 hover:opacity-100 cursor-pointer mt-4 w-full bg-[var(--accent-color)] text-white py-2 px-4 rounded"
         >
           {button}
         </button>
-      </form>
 
-    {/* todo: error messages only take zod validation into account, add general error feedback from tanstack mutation */}
 
-      {responseData?.error && (
-        <div className="max-w-md text-red-500">
-          {responseData.error}
-        </div>
-      )}
+      {/* todo: error messages only take zod validation into account, add general error feedback from tanstack mutation */}
+
+      {responseData?.error && <div className="max-w-md text-red-500">{errorMessage}</div>}
 
       {!error && !responseData?.error && isSuccess && (
-        <div className="max-w-md text-green-500">
-          Data received successfully!
-        </div>
-      )}</div>
-  )
-}
+        <div className="max-w-md text-green-500">Data received successfully!</div>
+      )}
+
+      </form>
+
+    </div>
+  );
+};

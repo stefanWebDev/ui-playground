@@ -2,8 +2,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import QueryProvider from "@/providers/QueryProvider";
-import Beacon from "@/init/Beacon";
+import QueryProvider from "@/utils/providers/QueryProvider";
+import Beacon from "@/utils/init/Beacon";
 import { cookies } from "next/headers";
 
 const geistSans = Geist({
@@ -29,12 +29,15 @@ export default async function RootLayout({
   // retrieve cookies updated on theme change, need, otherwise client and ssr wont match and hydration error occurs
   const theme = (await cookies()).get("theme")?.value || "light";
 
-  const themeInitScript = `
-    try {
-      var theme = localStorage.getItem("theme") || "${theme}";
-      document.documentElement.setAttribute("data-theme", theme);
-    } catch(e) {}
-  `;
+const themeInitScript = `
+  try {
+    var theme = document.cookie
+      .split("; ")
+      .find(row => row.startsWith("theme="))
+      ?.split("=")[1] || "${theme}";
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch(e) {}
+`;
 
   return (
     <html lang="en" data-theme={theme}>
