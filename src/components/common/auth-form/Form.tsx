@@ -71,7 +71,7 @@ export const Form = ({ inputs, button, type }: FormProps) => {
     <div className="w-full max-w-md flex flex-col gap-4">
       <form
         onSubmit={handleSubmit}
-        className="rounded-lg p-4 gap-2 flex flex-col border border-transparent focus-within:border-[var(--accent-color)]"
+        className="rounded-lg p-4 gap-2 flex flex-col border border-transparent"
       >
         {inputFields}
         <button
