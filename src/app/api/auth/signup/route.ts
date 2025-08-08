@@ -1,10 +1,17 @@
-import { FormDataUserSchema } from '@/types/schema';
-import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from "@/generated/prisma/client";
+import { FormDataUserSchema } from "@/types/schema";
+import { NextRequest, NextResponse } from "next/server";
+
+const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
-    const data = await request.json();
+  const data = await request.json();
 
-    const parsed = FormDataUserSchema.safeParse(data);
+  const users = await prisma.user.findMany();
 
-    return NextResponse.json({ message: 'Received!', error: parsed.error?.message });
+  const parsed = FormDataUserSchema.safeParse(data);
+
+  console.log("Users:", users);
+
+  return NextResponse.json({ message: "Received!", error: parsed.error?.message });
 }

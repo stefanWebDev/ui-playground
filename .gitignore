@@ -42,3 +42,5 @@ next-env.d.ts
 
 # in case you use JetBrains IDEs
 .idea
+
+/src/generated/prisma
