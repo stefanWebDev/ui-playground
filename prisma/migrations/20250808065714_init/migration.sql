@@ -1,10 +1,10 @@
 -- CreateTable
 CREATE TABLE "public"."User" (
     "id" SERIAL NOT NULL,
-    "surname" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "city" TEXT NOT NULL,
-    "address" TEXT NOT NULL,
+    "surname" TEXT,
+    "name" TEXT,
+    "city" TEXT,
+    "address" TEXT,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
 
