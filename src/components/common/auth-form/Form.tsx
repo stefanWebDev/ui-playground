@@ -4,7 +4,6 @@ import { FormEvent, useState } from "react";
 import Input from "./Input";
 import { useMutation } from "@tanstack/react-query";
 import { useFormData } from "@/utils/hooks/useFormData";
-import { setCookie } from "@/utils/helpers/cookie";
 import { useRouter } from "next/navigation";
 
 interface FormProps {
@@ -44,13 +43,6 @@ export const Form = ({ type }: FormProps) => {
       }
 
       return response.json();
-    },
-    onSuccess: () => {
-      if (type === "signin") {
-        router.push("/");
-      } else if (type === "signup") {
-        router.push("/auth/signin");
-      }
     },
   });
 
@@ -100,7 +92,7 @@ export const Form = ({ type }: FormProps) => {
         {errorMessage && <div className="max-w-md text-red-500">{errorMessage}</div>}
 
         {!error && !responseData?.error && isSuccess && (
-          <div className="max-w-md text-green-500">Data received successfully!</div>
+          <div className="max-w-md text-green-500">Success</div>
         )}
       </form>
     </div>
