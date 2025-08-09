@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -26,10 +25,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // retrieve cookies updated on theme change, need, otherwise client and ssr wont match and hydration error occurs
+  // retrieve cookies updated on theme change, otherwise client and ssr wont match and hydration error occurs
   const theme = (await cookies()).get("theme")?.value || "light";
 
-const themeInitScript = `
+  const themeInitScript = `
   try {
     var theme = document.cookie
       .split("; ")
@@ -46,9 +45,7 @@ const themeInitScript = `
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Beacon />
-        <QueryProvider>
-          {children}
-        </QueryProvider>
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );

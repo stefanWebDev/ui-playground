@@ -43,12 +43,15 @@ export async function POST(request: NextRequest) {
     }
 
     const accessToken = user.accessToken;
+    let token: string;
+    let expiresAt: Date;
+
+    // 30 days expiration
+    expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
     // If no access token exists, create one
-    // 30 days expiration
-    const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
     if (!accessToken) {
-      const token = crypto.randomBytes(32).toString("hex");
+      token = crypto.randomBytes(32).toString("hex");
       await prisma.accessToken.create({
         data: {
           token,
@@ -56,30 +59,44 @@ export async function POST(request: NextRequest) {
           expiresAt,
         },
       });
-      return NextResponse.json({ message: "No access token found", token, expiresAt });
     }
-
-    // If access token exists and is still valid, return it
-    if (accessToken.expiresAt > new Date()) {
-      return NextResponse.json({
-        message: "Token still valid",
-        token: accessToken.token,
-        expiresAt: accessToken.expiresAt,
+    // If access token exists and is still valid, use it
+    else if (accessToken.expiresAt > new Date()) {
+      token = accessToken.token;
+      expiresAt = accessToken.expiresAt;
+    }
+    // If access token exists but is expired, generate a new one
+    else {
+      token = crypto.randomBytes(32).toString("hex");
+      await prisma.accessToken.update({
+        where: { userId: user.id },
+        data: {
+          token,
+          expiresAt,
+        },
       });
     }
 
-    // If access token exists but is expired, generate a new one
-    const token = crypto.randomBytes(32).toString("hex");
-    await prisma.accessToken.update({
-      where: { userId: user.id },
-      data: {
-        token,
-        expiresAt,
+    // Create response and set cookie
+    const response = NextResponse.json({
+      message: "Sign in successful",
+      user: {
+        id: user.id,
+        email: user.email,
+        surname: user.surname,
       },
     });
 
-    return NextResponse.json({ message: "Received!", token, expiresAt });
+    response.cookies.set("accessToken", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      expires: expiresAt,
+      path: "/",
+    });
+
+    return response;
   } catch {
-    return NextResponse.json({ message: "Received!", error: "Server error", status: 500 });
+    return NextResponse.json({ message: "Server error", error: "Server error", status: 500 });
   }
 }

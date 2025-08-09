@@ -5,6 +5,7 @@ import Input from "./Input";
 import { useMutation } from "@tanstack/react-query";
 import { useFormData } from "@/utils/hooks/useFormData";
 import { setCookie } from "@/utils/helpers/cookie";
+import { useRouter } from "next/navigation";
 
 interface FormProps {
   type: "signin" | "signup";
@@ -12,16 +13,13 @@ interface FormProps {
 
 export const Form = ({ type }: FormProps) => {
   const [abortController, setAbortController] = useState<AbortController | null>(null);
+  const router = useRouter();
 
   const button = type === "signin" ? "sign in" : "sign up";
-  const inputs: FormDataKeys = type === "signin" ? ["email", "password"] : [
-        "surname",
-        "name",
-        "city",
-        "address",
-        "email",
-        "password"
-      ];
+  const inputs: FormDataKeys =
+    type === "signin"
+      ? ["email", "password"]
+      : ["surname", "name", "city", "address", "email", "password"];
 
   const [formData, setFormField] = useFormData();
 
@@ -47,9 +45,11 @@ export const Form = ({ type }: FormProps) => {
 
       return response.json();
     },
-    onSuccess: (data: { token: string; expiresAt: Date, error: string }) => {
-      if (data.token) {
-      setCookie("accessToken", data.token, new Date(data.expiresAt));
+    onSuccess: () => {
+      if (type === "signin") {
+        router.push("/");
+      } else if (type === "signup") {
+        router.push("/auth/signin");
       }
     },
   });
