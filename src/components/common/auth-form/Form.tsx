@@ -13,7 +13,7 @@ interface FormProps {
 export const Form = ({ type }: FormProps) => {
   const [abortController, setAbortController] = useState<AbortController | null>(null);
 
-  const button = type === "signin" ? "Sign In" : "Sign Up";
+  const button = type === "signin" ? "sign in" : "sign up";
   const inputs: FormDataKeys = type === "signin" ? ["email", "password"] : [
         "surname",
         "name",
