@@ -7,13 +7,21 @@ import { useFormData } from "@/utils/hooks/useFormData";
 import { setCookie } from "@/utils/helpers/cookie";
 
 interface FormProps {
-  inputs: FormDataKeys;
-  button: string;
   type: "signin" | "signup";
 }
 
-export const Form = ({ inputs, button, type }: FormProps) => {
+export const Form = ({ type }: FormProps) => {
   const [abortController, setAbortController] = useState<AbortController | null>(null);
+
+  const button = type === "signin" ? "Sign In" : "Sign Up";
+  const inputs: FormDataKeys = type === "signin" ? ["email", "password"] : [
+        "surname",
+        "name",
+        "city",
+        "address",
+        "email",
+        "password"
+      ];
 
   const [formData, setFormField] = useFormData();
 
@@ -40,7 +48,7 @@ export const Form = ({ inputs, button, type }: FormProps) => {
       return response.json();
     },
     onSuccess: (data: { token: string; expiresAt: Date, error: string }) => {
-      if (data.token ) {
+      if (data.token) {
       setCookie("accessToken", data.token, new Date(data.expiresAt));
       }
     },
