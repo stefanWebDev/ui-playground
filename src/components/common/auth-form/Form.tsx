@@ -4,15 +4,21 @@ import { FormEvent, useState } from "react";
 import Input from "./Input";
 import { useMutation } from "@tanstack/react-query";
 import { useFormData } from "@/utils/hooks/useFormData";
+import { useRouter } from "next/navigation";
 
 interface FormProps {
-  inputs: FormDataKeys;
-  button: string;
   type: "signin" | "signup";
 }
 
-export const Form = ({ inputs, button, type }: FormProps) => {
+export const Form = ({ type }: FormProps) => {
   const [abortController, setAbortController] = useState<AbortController | null>(null);
+  const router = useRouter();
+
+  const button = type === "signin" ? "sign in" : "sign up";
+  const inputs: FormDataKeys =
+    type === "signin"
+      ? ["email", "password"]
+      : ["surname", "name", "city", "address", "email", "password"];
 
   const [formData, setFormField] = useFormData();
 
@@ -21,7 +27,7 @@ export const Form = ({ inputs, button, type }: FormProps) => {
     data: responseData,
     error,
     isSuccess,
-    isPending
+    isPending,
   } = useMutation({
     mutationFn: async (data: FormDataUser) => {
       const response = await fetch(`/api/auth/${type}`, {
@@ -49,7 +55,9 @@ export const Form = ({ inputs, button, type }: FormProps) => {
   const initShadow = (e: React.FocusEvent<HTMLInputElement>) => {
     const abortController = new AbortController();
     setAbortController(abortController);
-    abortController && initDropShadow({ abortController, element: e.target });
+    if (abortController) {
+      initDropShadow({ abortController, element: e.target });
+    }
   };
 
   const inputFields = inputs.map((input) => (
@@ -64,8 +72,7 @@ export const Form = ({ inputs, button, type }: FormProps) => {
     />
   ));
 
-  const errorData = JSON.parse(responseData?.error || "[]");
-  const errorMessage = errorData[0]?.message
+  const errorMessage = responseData?.error;
 
   return (
     <div className="w-full max-w-md flex flex-col gap-4">
@@ -82,17 +89,12 @@ export const Form = ({ inputs, button, type }: FormProps) => {
           {button}
         </button>
 
+        {errorMessage && <div className="max-w-md text-red-500">{errorMessage}</div>}
 
-      {/* todo: error messages only take zod validation into account, add general error feedback from tanstack mutation */}
-
-      {responseData?.error && <div className="max-w-md text-red-500">{errorMessage}</div>}
-
-      {!error && !responseData?.error && isSuccess && (
-        <div className="max-w-md text-green-500">Data received successfully!</div>
-      )}
-
+        {!error && !responseData?.error && isSuccess && (
+          <div className="max-w-md text-green-500">Success</div>
+        )}
       </form>
-
     </div>
   );
 };
