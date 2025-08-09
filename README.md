@@ -3,6 +3,10 @@
 ## Info
 Playground to test out small concepts and designs to deepen my understanding of frontend.
 
+## DB
+create .env base on example .env
+start db with docker compose up
+
 
 ## Next.js
 
