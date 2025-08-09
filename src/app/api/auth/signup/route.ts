@@ -1,24 +1,30 @@
 import { PrismaClient } from "@/generated/prisma/client";
 import { FormDataUserSchema } from "@/types/schema";
 import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
 
 const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
-  const data = await request.json();
+  try {
+    const data = await request.json();
 
-  const parsed = FormDataUserSchema.safeParse(data);
+    const parsed = FormDataUserSchema.safeParse(data);
 
-  const users = await prisma.user.findMany();
+    if (parsed.error) {
+      return NextResponse.json({ message: "Invalid data", error: "Validation failed", status: 400 });
+    }
 
-  console.log("Users:", users);
+    const password = parsed.data?.password;
 
-  if (parsed.success) {
+    const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+
     const user = await prisma.user.create({
-      data: parsed.data,
+      data: { ...parsed.data, password: hashedPassword },
     });
-    return NextResponse.json({ message: "User created", user });
-  }
 
-  return NextResponse.json({ message: "Received!", error: parsed.error?.message });
+    return NextResponse.json({ message: "User created", user });
+  } catch {
+    return NextResponse.json({ message: "Invalid data", error: "Server error", status: 500 });
+  }
 }

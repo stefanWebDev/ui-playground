@@ -21,7 +21,10 @@ export default function ThemeColor() {
   useEffect(() => {
     if (!hydrated) return;
     document.documentElement.setAttribute("data-theme", theme);
-    setCookie("theme", theme, 365);
+    const days = 30;
+    const expirationDate = new Date(Date.now() + days * 864e5);
+
+    setCookie("theme", theme, expirationDate);
   }, [theme, hydrated]);
 
   const onChange = (value: "light" | "dark") => {

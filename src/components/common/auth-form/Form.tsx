@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import Input from "./Input";
 import { useMutation } from "@tanstack/react-query";
 import { useFormData } from "@/utils/hooks/useFormData";
+import { setCookie } from "@/utils/helpers/cookie";
 
 interface FormProps {
   inputs: FormDataKeys;
@@ -21,7 +22,7 @@ export const Form = ({ inputs, button, type }: FormProps) => {
     data: responseData,
     error,
     isSuccess,
-    isPending
+    isPending,
   } = useMutation({
     mutationFn: async (data: FormDataUser) => {
       const response = await fetch(`/api/auth/${type}`, {
@@ -38,6 +39,11 @@ export const Form = ({ inputs, button, type }: FormProps) => {
 
       return response.json();
     },
+    onSuccess: (data: { token: string; expiresAt: Date, error: string }) => {
+      if (data.token ) {
+      setCookie("accessToken", data.token, new Date(data.expiresAt));
+      }
+    },
   });
 
   const handleSubmit = (e: FormEvent) => {
@@ -49,7 +55,9 @@ export const Form = ({ inputs, button, type }: FormProps) => {
   const initShadow = (e: React.FocusEvent<HTMLInputElement>) => {
     const abortController = new AbortController();
     setAbortController(abortController);
-    abortController && initDropShadow({ abortController, element: e.target });
+    if (abortController) {
+      initDropShadow({ abortController, element: e.target });
+    }
   };
 
   const inputFields = inputs.map((input) => (
@@ -64,8 +72,7 @@ export const Form = ({ inputs, button, type }: FormProps) => {
     />
   ));
 
-  const errorData = JSON.parse(responseData?.error || "[]");
-  const errorMessage = errorData[0]?.message
+  const errorMessage = responseData?.error;
 
   return (
     <div className="w-full max-w-md flex flex-col gap-4">
@@ -82,17 +89,12 @@ export const Form = ({ inputs, button, type }: FormProps) => {
           {button}
         </button>
 
+        {errorMessage && <div className="max-w-md text-red-500">{errorMessage}</div>}
 
-      {/* todo: error messages only take zod validation into account, add general error feedback from tanstack mutation */}
-
-      {responseData?.error && <div className="max-w-md text-red-500">{errorMessage}</div>}
-
-      {!error && !responseData?.error && isSuccess && (
-        <div className="max-w-md text-green-500">Data received successfully!</div>
-      )}
-
+        {!error && !responseData?.error && isSuccess && (
+          <div className="max-w-md text-green-500">Data received successfully!</div>
+        )}
       </form>
-
     </div>
   );
 };
