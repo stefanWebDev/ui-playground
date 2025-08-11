@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Dropdown } from "@/components/custom/Dropdown";
-import Link from "next/link";
 import { getCookie, setCookie } from "@/utils/helpers/cookie";
-import { navLinkClasses } from "@/const/const";
+import { NavLink } from "@/components/common/NavLink";
 
 export default function ThemeColor() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -38,9 +37,7 @@ export default function ThemeColor() {
 
   return (
     <div className="font-sans p-8 flex flex-col gap-4 items-center">
-      <Link className={navLinkClasses} href="/">
-        Back
-      </Link>
+      <NavLink href="/" label="Back" />
       <Dropdown
         value={theme}
         onChange={(e) => onChange((e.target as HTMLSelectElement).value as "light" | "dark")}
