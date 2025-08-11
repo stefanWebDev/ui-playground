@@ -2,15 +2,46 @@ import { destroyDropShadow, initDropShadow } from "@/utils/effects/dropShadow";
 import { AuthButtonType, FormDataKeys, FormDataUser } from "@/types/types";
 import { FormEvent, useState } from "react";
 import Input from "./Input";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useFormData } from "@/utils/hooks/useFormData";
 
 interface FormProps {
   type: AuthButtonType;
+  onSuccess?: () => void;
 }
 
-export const Form = ({ type }: FormProps) => {
+export const Form = ({ type, onSuccess }: FormProps) => {
   const [abortController, setAbortController] = useState<AbortController | null>(null);
+  const [formData, setFormField] = useFormData();
+  const queryClient = useQueryClient();
+
+  const {
+    mutate,
+    error,
+    isSuccess,
+    data: responseData,
+    isPending,
+  } = useMutation({
+    mutationFn: async (data: FormDataUser) => {
+      const response = await fetch(`/api/auth/${type}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["auth-check"] });
+      onSuccess?.();
+    },
+  });
 
   const button = (() => {
     switch (type) {
@@ -35,32 +66,6 @@ export const Form = ({ type }: FormProps) => {
         return [];
     }
   })();
-
-  const [formData, setFormField] = useFormData();
-
-  const {
-    mutate,
-    data: responseData,
-    error,
-    isSuccess,
-    isPending,
-  } = useMutation({
-    mutationFn: async (data: FormDataUser) => {
-      const response = await fetch(`/api/auth/${type}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      return response.json();
-    },
-  });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

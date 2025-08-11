@@ -5,34 +5,51 @@ import { Form } from "@/components/common/auth-form/Form";
 import { useState } from "react";
 import { AuthButtonType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
+import { FancySpinner } from "@/components/common/FancySpinner";
 
 export default function Auth() {
   const [auth, setAuth] = useState<AuthButtonType>("signup");
 
-  const {
-    data: user,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: user, isLoading } = useQuery({
     queryKey: ["auth-check"],
     queryFn: async () => {
       const response = await fetch("/api/private");
 
-      if (!response.ok) {
-        throw new Error("Not authenticated");
-      }
+      if (!response.ok) return null;
 
-      return response.json();
+      return await response.json();
     },
   });
 
-  console.log("User data:", user, "Loading:", isLoading, "Error:", error);
+  const swappedAuth = (() => {
+    switch (auth) {
+      case "signin":
+        return "logout";
+      case "logout":
+        return "signin";
+      default:
+        return "signup";
+    }
+  })();
 
-  const buttons: { label: string; value: AuthButtonType }[] = [
-    { label: "sign up", value: "signup" },
-    { label: "sign in", value: "signin" },
-    { label: "logout", value: "logout" },
-  ];
+  const buttons: { label: string; value: AuthButtonType }[] = user?.user?.id
+    ? [
+        { label: "sign up", value: "signup" },
+        { label: "logout", value: "logout" },
+      ]
+    : [
+        { label: "sign up", value: "signup" },
+        { label: "sign in", value: "signin" },
+      ];
+
+  if (isLoading) {
+    return (
+      <div className="font-sans p-8 flex flex-col gap-4 items-center justify-center min-h-screen">
+        <FancySpinner size="lg" />
+        <p className="text-gray-600 animate-pulse">Checking authentication...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="font-sans p-8 flex flex-col gap-4 items-center">
@@ -56,7 +73,7 @@ export default function Auth() {
         ))}
       </div>
 
-      <Form key={auth} type={auth} />
+      <Form key={auth} type={auth} onSuccess={() => setAuth(swappedAuth)} />
     </div>
   );
 }

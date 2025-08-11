@@ -1,13 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@/generated/prisma/client";
+
+const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
-  console.log("Private API route accessed");
   try {
-    const userName = request.headers.get("x-user-name");
-    const userId = request.headers.get("x-user-id");
-    const userEmail = request.headers.get("x-user-email");
+    const cookie = request.cookies.get("accessToken");
 
-    console.log("User Name:", request.headers.get("x-user-name"));
+    const token = await prisma.accessToken.findUnique({
+      where: {
+        token: cookie?.value,
+
+        expiresAt: {
+          gte: new Date(),
+        },
+      },
+
+      include: {
+        user: true,
+      },
+    });
+
+    const userId = token?.user.id;
+    const userName = token?.user.surname;
+    const userEmail = token?.user.email;
 
     if (!userId) {
       return NextResponse.json({ error: "User not found" }, { status: 401 });
