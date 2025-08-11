@@ -4,9 +4,7 @@ import "./globals.css";
 import QueryProvider from "@/utils/providers/QueryProvider";
 import Beacon from "@/utils/init/Beacon";
 import { cookies } from "next/headers";
-import { List } from "@/components/custom/List";
-import Link from "next/link";
-import { navLinkClasses } from "@/const/const";
+import { NavLink } from "@/components/common/NavLink";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,12 +48,8 @@ export default async function RootLayout({
         <Beacon />
         <nav className="absolute top-0 right-0 p-4 z-10">
           <div className="flex items-center gap-4">
-            <Link href="/auth" className={navLinkClasses}>
-              Account
-            </Link>
-            <Link href="/theme" className={navLinkClasses}>
-              Theme
-            </Link>
+            <NavLink href="/auth" label="Account" />
+            <NavLink href="/theme" label="Theme" />
           </div>
         </nav>
         <QueryProvider>{children}</QueryProvider>

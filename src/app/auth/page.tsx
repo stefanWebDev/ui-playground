@@ -1,12 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { Form } from "@/components/common/auth-form/Form";
 import { useState } from "react";
 import { AuthButtonType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { FancySpinner } from "@/components/common/FancySpinner";
-import { navLinkClasses } from "@/const/const";
+import { NavLink } from "@/components/common/NavLink";
 
 export default function Auth() {
   const [auth, setAuth] = useState<AuthButtonType>("signup");
@@ -54,9 +53,7 @@ export default function Auth() {
 
   return (
     <div className="font-sans p-8 flex flex-col gap-4 items-center">
-      <Link className={navLinkClasses} href="/">
-        Back
-      </Link>
+      <NavLink href="/" label="Back" />
       <div className="flex gap-4 mb-4">
         {buttons.map((button) => (
           <button
