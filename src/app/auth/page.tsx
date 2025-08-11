@@ -36,7 +36,7 @@ export default function Auth() {
         ))}
       </div>
 
-      <Form type={auth} />
+      <Form key={auth} type={auth} />
     </div>
   );
 }

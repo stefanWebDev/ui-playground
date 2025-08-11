@@ -6,5 +6,7 @@ export const getCookie = (name: string) => {
 };
 
 export const setCookie = (name: string, value: string, expirationDate: Date) => {
-  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expirationDate.toUTCString()}; path=/`;
+  document.cookie = `${name}=${encodeURIComponent(
+    value
+  )}; expires=${expirationDate.toUTCString()}; path=/`;
 };
