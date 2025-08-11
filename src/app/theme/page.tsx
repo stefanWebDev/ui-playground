@@ -45,8 +45,8 @@ export default function ThemeColor() {
         value={theme}
         onChange={(e) => onChange((e.target as HTMLSelectElement).value as "light" | "dark")}
         options={[
-          { value: "light", label: "Light Mode" },
-          { value: "dark", label: "Dark Mode" },
+          { value: "light", label: "light mode" },
+          { value: "dark", label: "dark mode" },
         ]}
       />
     </div>
