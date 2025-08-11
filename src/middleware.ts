@@ -33,8 +33,8 @@ export async function middleware(request: NextRequest) {
     const requestHeaders = new Headers(request.headers);
 
     requestHeaders.set("x-user-id", token.user.id.toString());
-
     requestHeaders.set("x-user-email", token.user.email);
+    requestHeaders.set("x-user-name", token.user.surname || token.user.name || "");
 
     return NextResponse.next({
       request: {
@@ -44,12 +44,11 @@ export async function middleware(request: NextRequest) {
   } catch {
     return NextResponse.json(
       { message: "Error in middleware", error: "Server error", status: 500 },
-
       { status: 500 }
     );
   }
 }
 
 export const config = {
-  matcher: "/api/auth/private/:path*",
+  matcher: ["/api/private"],
 };

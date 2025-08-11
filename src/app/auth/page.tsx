@@ -4,9 +4,29 @@ import Link from "next/link";
 import { Form } from "@/components/common/auth-form/Form";
 import { useState } from "react";
 import { AuthButtonType } from "@/types/types";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Auth() {
   const [auth, setAuth] = useState<AuthButtonType>("signup");
+
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["auth-check"],
+    queryFn: async () => {
+      const response = await fetch("/api/private");
+
+      if (!response.ok) {
+        throw new Error("Not authenticated");
+      }
+
+      return response.json();
+    },
+  });
+
+  console.log("User data:", user, "Loading:", isLoading, "Error:", error);
 
   const buttons: { label: string; value: AuthButtonType }[] = [
     { label: "sign up", value: "signup" },
