@@ -11,9 +11,7 @@ export default function Home() {
 
       <List
         items={[
-          { id: "1", label: "sign up", link: "/auth/signup" },
-          { id: "2", label: "sign in", link: "/auth/signin" },
-          { id: "3", label: "log out", link: "/auth/logout" },
+          { id: "1", label: "auth", link: "/auth" },
           { id: "4", label: "change theme", link: "/theme" },
         ]}
       />

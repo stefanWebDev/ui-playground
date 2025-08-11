@@ -1,4 +1,3 @@
-
 export interface FormDataUser {
   surname?: string;
   name?: string;
@@ -9,3 +8,5 @@ export interface FormDataUser {
 }
 
 export type FormDataKeys = (keyof FormDataUser)[];
+
+export type AuthButtonType = "signup" | "signin" | "logout";

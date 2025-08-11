@@ -1,24 +1,40 @@
 import { destroyDropShadow, initDropShadow } from "@/utils/effects/dropShadow";
-import { FormDataKeys, FormDataUser } from "@/types/interface";
+import { AuthButtonType, FormDataKeys, FormDataUser } from "@/types/types";
 import { FormEvent, useState } from "react";
 import Input from "./Input";
 import { useMutation } from "@tanstack/react-query";
 import { useFormData } from "@/utils/hooks/useFormData";
-import { useRouter } from "next/navigation";
 
 interface FormProps {
-  type: "signin" | "signup";
+  type: AuthButtonType;
 }
 
 export const Form = ({ type }: FormProps) => {
   const [abortController, setAbortController] = useState<AbortController | null>(null);
-  const router = useRouter();
 
-  const button = type === "signin" ? "sign in" : "sign up";
-  const inputs: FormDataKeys =
-    type === "signin"
-      ? ["email", "password"]
-      : ["surname", "name", "city", "address", "email", "password"];
+  const button = (() => {
+    switch (type) {
+      case "signin":
+        return "sign in";
+      case "signup":
+        return "sign up";
+      case "logout":
+        return "logout";
+      default:
+        return "";
+    }
+  })();
+
+  const inputs: FormDataKeys = (() => {
+    switch (type) {
+      case "signin":
+        return ["email", "password"];
+      case "signup":
+        return ["surname", "name", "city", "address", "email", "password"];
+      default:
+        return [];
+    }
+  })();
 
   const [formData, setFormField] = useFormData();
 
