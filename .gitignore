@@ -44,3 +44,7 @@ next-env.d.ts
 .idea
 
 /src/generated/prisma
+
+/mqtt/.env
+
+/mqtt/node_modules
