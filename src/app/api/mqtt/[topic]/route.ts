@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest, { params }: { params: { topic: string } }) {
+export async function POST(req: NextRequest) {
   const body = await req.json();
-  console.log(`Received POST request for topic: blub`, body);
-  return NextResponse.json({ success: true, topic: "blub", received: body.value });
+  return NextResponse.json({ success: true, received: body.value });
 }
