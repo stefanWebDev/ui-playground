@@ -14,6 +14,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ValueType {
+  Analog
+  Digital
+}
+
 model User {
   id          Int          @id @default(autoincrement())
   surname     String?
@@ -53,7 +58,7 @@ model Topic {
 
 model Sensor {
   id           Int           @id @default(autoincrement())
-  value_type   Boolean
+  value_type   ValueType
   unit         String
   flip_value   Boolean
   model        String
