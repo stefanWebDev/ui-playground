@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Prisma } from "@/generated/prisma/client";
 import { Dropdown } from "@/components/common/Dropdown";
 import { FancySpinner } from "@/components/common/FancySpinner";
+import { ObservationChart } from "@/components/custom/ObservationChart";
 
 type IotDataResponse = {
   user: Prisma.UserGetPayload<{
@@ -47,6 +48,7 @@ export default function Home() {
   const topics = selectedThing?.topics || [];
   const selectedTopic = topics.find((topic) => topic.id === parseInt(selectedTopicId));
   const sensors = selectedTopic?.sensors || [];
+  const selectedSensor = sensors.find((sensor) => sensor.id === parseInt(selectedSensorId));
 
   const handleThingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedThingId(e.target.value);
@@ -71,6 +73,8 @@ export default function Home() {
       </div>
     );
   }
+
+  console.log("Fetched IoT data:", data);
 
   return (
     <div className="font-sans p-8 flex flex-col gap-8">
@@ -123,11 +127,15 @@ export default function Home() {
           <h3 className="font-semibold">Selected Sensor Details:</h3>
           <p>Thing description: {selectedThing?.description}</p>
           <p>Topic description: {selectedTopic?.description}</p>
-          <p>
-            Sensor model:{" "}
-            {sensors.find((sensor) => sensor.id === parseInt(selectedSensorId))?.model}
-          </p>
+          <p>Sensor model: {selectedSensor?.model}</p>
         </div>
+      )}
+
+      {selectedSensor && (
+        <ObservationChart
+          sensor={selectedSensor}
+          className="mt-8 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20"
+        />
       )}
     </div>
   );
