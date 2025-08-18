@@ -1,0 +1,54 @@
+import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@/generated/prisma/client";
+
+const prisma = new PrismaClient();
+
+export async function GET(request: NextRequest) {
+  try {
+    const cookie = request.cookies.get("accessToken");
+
+    const token = await prisma.accessToken.findUnique({
+      where: {
+        token: cookie?.value,
+        expiresAt: {
+          gte: new Date(),
+        },
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            surname: true,
+            name: true,
+
+            things: {
+              include: {
+                topics: {
+                  include: {
+                    sensors: {
+                      include: {
+                        observations: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const userId = token?.user.id;
+
+    if (!userId) {
+      return NextResponse.json({ error: "You are not logged" }, { status: 401 });
+    }
+
+    return NextResponse.json({
+      user: token.user,
+    });
+  } catch {
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}

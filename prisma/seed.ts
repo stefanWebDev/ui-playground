@@ -1,14 +1,27 @@
 import { PrismaClient, ValueType } from "../src/generated/prisma";
+import crypto from "crypto";
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log("Start seeding...");
 
+  const hashedPassword = crypto.createHash("sha256").update("root").digest("hex");
+
+  const adminUser = await prisma.user.create({
+    data: {
+      email: "admin@example.com",
+      password: hashedPassword,
+      name: "Admin",
+      surname: "User",
+    },
+  });
+
   const thing1 = await prisma.thing.create({
     data: {
       title: "Smart Home System",
       description: "IoT system for monitoring home environment",
+      userId: adminUser.id,
       topics: {
         create: [
           {
@@ -25,11 +38,11 @@ async function main() {
                   model: "DHT22",
                   observations: {
                     create: [
-                      { value: 22.5, created_at: new Date("2025-08-15T10:00:00Z") },
-                      { value: 23.1, created_at: new Date("2025-08-15T11:00:00Z") },
-                      { value: 22.8, created_at: new Date("2025-08-15T12:00:00Z") },
-                      { value: 24.2, created_at: new Date("2025-08-15T13:00:00Z") },
-                      { value: 23.7, created_at: new Date("2025-08-15T14:00:00Z") },
+                      { value: 22.5, created_at: new Date("2025-08-10T10:00:00Z") },
+                      { value: 23.1, created_at: new Date("2025-08-11T11:00:00Z") },
+                      { value: 22.8, created_at: new Date("2025-08-12T12:00:00Z") },
+                      { value: 24.2, created_at: new Date("2025-08-13T13:00:00Z") },
+                      { value: 23.7, created_at: new Date("2025-08-14T14:00:00Z") },
                     ],
                   },
                 },
@@ -40,11 +53,11 @@ async function main() {
                   model: "DHT22",
                   observations: {
                     create: [
-                      { value: 45.2, created_at: new Date("2025-08-15T10:00:00Z") },
-                      { value: 46.8, created_at: new Date("2025-08-15T11:00:00Z") },
-                      { value: 44.1, created_at: new Date("2025-08-15T12:00:00Z") },
-                      { value: 47.3, created_at: new Date("2025-08-15T13:00:00Z") },
-                      { value: 45.9, created_at: new Date("2025-08-15T14:00:00Z") },
+                      { value: 45.2, created_at: new Date("2025-08-10T10:00:00Z") },
+                      { value: 46.8, created_at: new Date("2025-08-11T11:00:00Z") },
+                      { value: 44.1, created_at: new Date("2025-08-12T12:00:00Z") },
+                      { value: 47.3, created_at: new Date("2025-08-13T13:00:00Z") },
+                      { value: 45.9, created_at: new Date("2025-08-14T14:00:00Z") },
                     ],
                   },
                 },
@@ -65,11 +78,11 @@ async function main() {
                   model: "PIR-HC-SR501",
                   observations: {
                     create: [
-                      { value: 0, created_at: new Date("2025-08-15T08:00:00Z") },
-                      { value: 1, created_at: new Date("2025-08-15T08:30:00Z") },
-                      { value: 0, created_at: new Date("2025-08-15T09:00:00Z") },
-                      { value: 1, created_at: new Date("2025-08-15T12:15:00Z") },
-                      { value: 0, created_at: new Date("2025-08-15T12:45:00Z") },
+                      { value: 0, created_at: new Date("2025-08-10T08:00:00Z") },
+                      { value: 1, created_at: new Date("2025-08-11T08:30:00Z") },
+                      { value: 0, created_at: new Date("2025-08-12T09:00:00Z") },
+                      { value: 1, created_at: new Date("2025-08-13T12:15:00Z") },
+                      { value: 0, created_at: new Date("2025-08-14T12:45:00Z") },
                     ],
                   },
                 },
@@ -80,11 +93,11 @@ async function main() {
                   model: "Reed-Switch-MC-38",
                   observations: {
                     create: [
-                      { value: 1, created_at: new Date("2025-08-15T08:00:00Z") },
-                      { value: 0, created_at: new Date("2025-08-15T08:05:00Z") },
-                      { value: 1, created_at: new Date("2025-08-15T08:10:00Z") },
-                      { value: 0, created_at: new Date("2025-08-15T12:00:00Z") },
-                      { value: 1, created_at: new Date("2025-08-15T12:05:00Z") },
+                      { value: 1, created_at: new Date("2025-08-10T08:00:00Z") },
+                      { value: 0, created_at: new Date("2025-08-11T08:05:00Z") },
+                      { value: 1, created_at: new Date("2025-08-12T08:10:00Z") },
+                      { value: 0, created_at: new Date("2025-08-13T12:00:00Z") },
+                      { value: 1, created_at: new Date("2025-08-14T12:05:00Z") },
                     ],
                   },
                 },
@@ -100,6 +113,7 @@ async function main() {
     data: {
       title: "Greenhouse Monitoring",
       description: "Agricultural IoT system for greenhouse management",
+      userId: adminUser.id,
       topics: {
         create: [
           {
@@ -116,11 +130,11 @@ async function main() {
                   model: "Capacitive-Soil-Moisture",
                   observations: {
                     create: [
-                      { value: 65.4, created_at: new Date("2025-08-15T06:00:00Z") },
-                      { value: 63.2, created_at: new Date("2025-08-15T09:00:00Z") },
-                      { value: 61.8, created_at: new Date("2025-08-15T12:00:00Z") },
-                      { value: 59.7, created_at: new Date("2025-08-15T15:00:00Z") },
-                      { value: 62.1, created_at: new Date("2025-08-15T18:00:00Z") },
+                      { value: 65.4, created_at: new Date("2025-08-10T06:00:00Z") },
+                      { value: 63.2, created_at: new Date("2025-08-11T09:00:00Z") },
+                      { value: 61.8, created_at: new Date("2025-08-12T12:00:00Z") },
+                      { value: 59.7, created_at: new Date("2025-08-13T15:00:00Z") },
+                      { value: 62.1, created_at: new Date("2025-08-14T18:00:00Z") },
                     ],
                   },
                 },
@@ -131,11 +145,11 @@ async function main() {
                   model: "pH-Sensor-SEN0161",
                   observations: {
                     create: [
-                      { value: 6.8, created_at: new Date("2025-08-15T06:00:00Z") },
-                      { value: 6.7, created_at: new Date("2025-08-15T09:00:00Z") },
-                      { value: 6.9, created_at: new Date("2025-08-15T12:00:00Z") },
-                      { value: 7.0, created_at: new Date("2025-08-15T15:00:00Z") },
-                      { value: 6.8, created_at: new Date("2025-08-15T18:00:00Z") },
+                      { value: 6.8, created_at: new Date("2025-08-10T06:00:00Z") },
+                      { value: 6.7, created_at: new Date("2025-08-11T09:00:00Z") },
+                      { value: 6.9, created_at: new Date("2025-08-12T12:00:00Z") },
+                      { value: 7.0, created_at: new Date("2025-08-13T15:00:00Z") },
+                      { value: 6.8, created_at: new Date("2025-08-14T18:00:00Z") },
                     ],
                   },
                 },
@@ -156,11 +170,11 @@ async function main() {
                   model: "DS18B20",
                   observations: {
                     create: [
-                      { value: 26.3, created_at: new Date("2025-08-15T06:00:00Z") },
-                      { value: 28.7, created_at: new Date("2025-08-15T09:00:00Z") },
-                      { value: 31.2, created_at: new Date("2025-08-15T12:00:00Z") },
-                      { value: 29.8, created_at: new Date("2025-08-15T15:00:00Z") },
-                      { value: 27.5, created_at: new Date("2025-08-15T18:00:00Z") },
+                      { value: 26.3, created_at: new Date("2025-08-10T06:00:00Z") },
+                      { value: 28.7, created_at: new Date("2025-08-11T09:00:00Z") },
+                      { value: 31.2, created_at: new Date("2025-08-12T12:00:00Z") },
+                      { value: 29.8, created_at: new Date("2025-08-13T15:00:00Z") },
+                      { value: 27.5, created_at: new Date("2025-08-14T18:00:00Z") },
                     ],
                   },
                 },
@@ -171,11 +185,11 @@ async function main() {
                   model: "Ventilation-Fan-Relay",
                   observations: {
                     create: [
-                      { value: 0, created_at: new Date("2025-08-15T06:00:00Z") },
-                      { value: 0, created_at: new Date("2025-08-15T09:00:00Z") },
-                      { value: 1, created_at: new Date("2025-08-15T12:00:00Z") },
-                      { value: 1, created_at: new Date("2025-08-15T15:00:00Z") },
-                      { value: 0, created_at: new Date("2025-08-15T18:00:00Z") },
+                      { value: 0, created_at: new Date("2025-08-10T06:00:00Z") },
+                      { value: 0, created_at: new Date("2025-08-11T09:00:00Z") },
+                      { value: 1, created_at: new Date("2025-08-12T12:00:00Z") },
+                      { value: 1, created_at: new Date("2025-08-13T15:00:00Z") },
+                      { value: 0, created_at: new Date("2025-08-14T18:00:00Z") },
                     ],
                   },
                 },
@@ -188,7 +202,7 @@ async function main() {
   });
 
   console.log("Seeding finished.");
-  console.log("Created:", { thing1, thing2 });
+  console.log("Created:", { adminUser, thing1, thing2 });
 }
 
 main()

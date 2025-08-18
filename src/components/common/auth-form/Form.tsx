@@ -37,9 +37,11 @@ export const Form = ({ type, onSuccess }: FormProps) => {
 
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["auth-check"] });
-      onSuccess?.();
+    onSuccess: (data) => {
+      if (!data.error) {
+        queryClient.invalidateQueries({ queryKey: ["auth-check"] });
+        onSuccess?.();
+      }
     },
   });
 

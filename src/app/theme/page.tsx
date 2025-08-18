@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Dropdown } from "@/components/custom/Dropdown";
+import { Dropdown } from "@/components/common/Dropdown";
 import { getCookie, setCookie } from "@/utils/helpers/cookie";
 import { NavLink } from "@/components/common/NavLink";
 

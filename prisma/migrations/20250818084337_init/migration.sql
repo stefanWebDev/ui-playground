@@ -1,8 +1,35 @@
+-- CreateEnum
+CREATE TYPE "public"."ValueType" AS ENUM ('Analog', 'Digital');
+
+-- CreateTable
+CREATE TABLE "public"."User" (
+    "id" SERIAL NOT NULL,
+    "surname" TEXT,
+    "name" TEXT,
+    "city" TEXT,
+    "address" TEXT,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."AccessToken" (
+    "id" SERIAL NOT NULL,
+    "token" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "userId" INTEGER NOT NULL,
+
+    CONSTRAINT "AccessToken_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateTable
 CREATE TABLE "public"."Thing" (
     "id" SERIAL NOT NULL,
     "description" TEXT NOT NULL,
     "title" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Thing_pkey" PRIMARY KEY ("id")
 );
@@ -22,7 +49,7 @@ CREATE TABLE "public"."Topic" (
 -- CreateTable
 CREATE TABLE "public"."Sensor" (
     "id" SERIAL NOT NULL,
-    "value_type" BOOLEAN NOT NULL,
+    "value_type" "public"."ValueType" NOT NULL,
     "unit" TEXT NOT NULL,
     "flip_value" BOOLEAN NOT NULL,
     "model" TEXT NOT NULL,
@@ -40,6 +67,21 @@ CREATE TABLE "public"."Observation" (
 
     CONSTRAINT "Observation_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "AccessToken_token_key" ON "public"."AccessToken"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "AccessToken_userId_key" ON "public"."AccessToken"("userId");
+
+-- AddForeignKey
+ALTER TABLE "public"."AccessToken" ADD CONSTRAINT "AccessToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."Thing" ADD CONSTRAINT "Thing_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."Topic" ADD CONSTRAINT "Topic_thingId_fkey" FOREIGN KEY ("thingId") REFERENCES "public"."Thing"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
