@@ -46,13 +46,15 @@ export default async function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Beacon />
-        <nav className="absolute top-0 right-0 p-4 z-10">
-          <div className="flex items-center gap-4">
-            <NavLink href="/auth" label="Account" />
-            <NavLink href="/theme" label="Theme" />
-          </div>
-        </nav>
-        <QueryProvider>{children}</QueryProvider>
+        <div className="max-w-[1600px] mx-auto relative">
+          <nav className="absolute top-0 right-0 p-4 z-10">
+            <div className="flex items-center gap-4">
+              <NavLink href="/auth" label="Account" />
+              <NavLink href="/theme" label="Theme" />
+            </div>
+          </nav>
+          <QueryProvider>{children}</QueryProvider>
+        </div>
       </body>
     </html>
   );
