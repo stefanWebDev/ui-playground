@@ -1,7 +1,7 @@
 ## Info
-Playground to test out concepts and designs.
+Formerly a playground to test out ui concepts and designs that turned into an actual project:
 
-## The Plan
+## The Project
 Create a tool that monitors my room and collects data from sensors, such as temperature, humidity of my plant and how many people enter my room on a daily basis.
 This project contains the db, the frontend and the subscriber script for mosquitto that sends data received via mqtt to next.js app via http request. 
 In my local setup, I am using raspberry pi 4 with az delivery sensors, node red for grapping sensor data that is published to mosquitto via mqtt. 
