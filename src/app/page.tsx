@@ -6,6 +6,7 @@ import { Prisma } from "@/generated/prisma/client";
 import { Dropdown } from "@/components/common/Dropdown";
 import { FancySpinner } from "@/components/common/FancySpinner";
 import { ObservationChart } from "@/components/custom/ObservationChart";
+import { NavLink } from "@/components/common/NavLink";
 
 type IotDataResponse = {
   user: Prisma.UserGetPayload<{
@@ -80,6 +81,7 @@ export default function Home() {
     return (
       <div className="font-sans p-8 flex flex-col gap-4 items-center justify-center min-h-screen">
         <p className="text-red-600">Error loading IoT data: {error.message} - are you logged in?</p>
+        <NavLink href="/auth" label="Login" />
       </div>
     );
   }
