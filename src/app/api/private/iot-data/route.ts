@@ -16,7 +16,11 @@ export async function GET(request: NextRequest) {
       },
       include: {
         user: {
-          include: {
+          select: {
+            id: true,
+            surname: true,
+            name: true,
+
             things: {
               include: {
                 topics: {
@@ -34,7 +38,7 @@ export async function GET(request: NextRequest) {
     const userId = token?.user.id;
 
     if (!userId) {
-      return NextResponse.json({ error: "You are not logged in" }, { status: 401 });
+      return NextResponse.json({ error: "You are not logged" }, { status: 401 });
     }
 
     return NextResponse.json({
