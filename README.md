@@ -28,5 +28,4 @@ This is still work in progress
 - simplified version of oAuth login
 - change theme color
 - MQTT subscription server
-- cockpit to room render data (still in progress)
-- admin area to add new topics (still in progress)
+- cockpit to render room data (still in progress)
