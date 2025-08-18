@@ -32,3 +32,40 @@ model AccessToken {
   user      User     @relation(fields: [userId], references: [id])
   userId    Int      @unique
 }
+
+model Thing {
+  id          Int     @id @default(autoincrement())
+  description String
+  title       String
+  topics      Topic[]
+}
+
+model Topic {
+  id          Int      @id @default(autoincrement())
+  location    String
+  subject     String
+  description String
+  title       String
+  thing       Thing    @relation(fields: [thingId], references: [id])
+  thingId     Int
+  sensors     Sensor[]
+}
+
+model Sensor {
+  id           Int           @id @default(autoincrement())
+  value_type   Boolean
+  unit         String
+  flip_value   Boolean
+  model        String
+  topic        Topic         @relation(fields: [topicId], references: [id])
+  topicId      Int
+  observations Observation[]
+}
+
+model Observation {
+  id         Int      @id @default(autoincrement())
+  value      Float
+  created_at DateTime @default(now())
+  sensor     Sensor   @relation(fields: [sensorId], references: [id])
+  sensorId   Int
+}
