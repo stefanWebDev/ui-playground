@@ -1,6 +1,6 @@
 import { Prisma } from "@/generated/prisma/client";
 
-type Observation = Prisma.ObservationGetPayload<{}>;
+type Observation = Prisma.ObservationGetPayload<object>;
 type Sensor = Prisma.SensorGetPayload<{
   include: {
     observations: true;

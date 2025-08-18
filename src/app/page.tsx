@@ -32,12 +32,14 @@ export default function Home() {
   const [selectedTopicId, setSelectedTopicId] = useState<string>("");
   const [selectedSensorId, setSelectedSensorId] = useState<string>("");
 
-  const { data, isLoading } = useQuery<IotDataResponse>({
+  const { data, isLoading, isError, error } = useQuery<IotDataResponse>({
     queryKey: ["iot-data"],
     queryFn: async () => {
       const response = await fetch("/api/private/iot-data");
 
-      if (!response.ok) return null;
+      if (!response.ok) {
+        throw new Error("Failed to fetch IoT data");
+      }
 
       return await response.json();
     },
@@ -74,7 +76,13 @@ export default function Home() {
     );
   }
 
-  console.log("Fetched IoT data:", data);
+  if (error) {
+    return (
+      <div className="font-sans p-8 flex flex-col gap-4 items-center justify-center min-h-screen">
+        <p className="text-red-600">Error loading IoT data: {error.message} - are you logged in?</p>
+      </div>
+    );
+  }
 
   return (
     <div className="font-sans p-8 flex flex-col gap-8">
