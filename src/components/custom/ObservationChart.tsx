@@ -87,7 +87,7 @@ export const ObservationChart = ({ sensor, className = "" }: ObservationChartPro
               </div>
             </div>
 
-            <div className="text-xs text-gray-600 mt-2 transform -rotate-45 origin-left whitespace-nowrap">
+            <div className="text-xs text-[var(--color)] mt-2 transform -rotate-45 origin-left whitespace-nowrap">
               {new Date(data.date).toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
