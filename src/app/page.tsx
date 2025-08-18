@@ -10,7 +10,11 @@ type IotDataResponse = {
         include: {
           topics: {
             include: {
-              sensors: true;
+              sensors: {
+                include: {
+                  observations: true;
+                };
+              };
             };
           };
         };

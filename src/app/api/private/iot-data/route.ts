@@ -25,7 +25,11 @@ export async function GET(request: NextRequest) {
               include: {
                 topics: {
                   include: {
-                    sensors: true,
+                    sensors: {
+                      include: {
+                        observations: true,
+                      },
+                    },
                   },
                 },
               },
