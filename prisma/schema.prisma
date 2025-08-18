@@ -27,7 +27,7 @@ model User {
   address     String?
   email       String       @unique
   password    String
-  accessToken AccessToken? // one-to-one relation to AccessToken
+  accessToken AccessToken?
 }
 
 model AccessToken {
