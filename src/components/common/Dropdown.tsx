@@ -1,7 +1,8 @@
+import { DropdownOptions } from "@/types/types";
 import { SelectHTMLAttributes } from "react";
 
 interface DropdownProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  options: { value: string; label: string }[];
+  options: DropdownOptions;
 }
 
 export const Dropdown = ({ options, ...rest }: DropdownProps) => {

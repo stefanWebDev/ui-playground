@@ -1,14 +1,27 @@
 import { PrismaClient, ValueType } from "../src/generated/prisma";
+import crypto from "crypto";
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log("Start seeding...");
 
+  const hashedPassword = crypto.createHash("sha256").update("root").digest("hex");
+
+  const adminUser = await prisma.user.create({
+    data: {
+      email: "admin@example.com",
+      password: hashedPassword,
+      name: "Admin",
+      surname: "User",
+    },
+  });
+
   const thing1 = await prisma.thing.create({
     data: {
       title: "Smart Home System",
       description: "IoT system for monitoring home environment",
+      userId: adminUser.id,
       topics: {
         create: [
           {
@@ -100,6 +113,7 @@ async function main() {
     data: {
       title: "Greenhouse Monitoring",
       description: "Agricultural IoT system for greenhouse management",
+      userId: adminUser.id,
       topics: {
         create: [
           {
@@ -188,7 +202,7 @@ async function main() {
   });
 
   console.log("Seeding finished.");
-  console.log("Created:", { thing1, thing2 });
+  console.log("Created:", { adminUser, thing1, thing2 });
 }
 
 main()
