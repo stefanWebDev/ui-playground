@@ -16,6 +16,8 @@ This is still work in progress
 - run migrations: 'npx prisma migrate deploy'
 - start next.js app with: 'npm run dev' / 'npm run start'
 - set up .env file in mqtt folder, 'npm install', 'node server' (if you have broker like mosquitto set up)
+- if you only want to look at the next.js frontend: seed sample data with 'npm run prisma-seed' OR
+- add sample data via db gui: 'npm run db-gui'
 
 ## Features
 - simplified version of oAuth login
