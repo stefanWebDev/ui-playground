@@ -12,6 +12,10 @@ In my local setup, I am using raspberry pi 4 with az delivery sensors, node red 
 
 This is still work in progress
 
+## Overview
+
+![Architecture Diagram](./docs/overview.svg)
+
 ## Start
 
 - create .env based on .env.example
@@ -29,10 +33,6 @@ This is still work in progress
 - change theme color
 - MQTT subscription server
 - cockpit to render room data (still in progress)
-
-## Overview
-
-![Architecture Diagram](./docs/overview.svg)
 
 ## UML
 
