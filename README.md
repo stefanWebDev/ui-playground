@@ -29,3 +29,11 @@ This is still work in progress
 - change theme color
 - MQTT subscription server
 - cockpit to render room data (still in progress)
+
+## Overview
+
+![Architecture Diagram](./docs/overview.svg)
+
+## UML
+
+![Data Layer](./docs/data.png)
