@@ -1,5 +1,4 @@
-
-import { z } from 'zod';
+import { z } from "zod";
 
 export const FormDataUserSchema = z.object({
   surname: z.string().optional(),
@@ -8,4 +7,9 @@ export const FormDataUserSchema = z.object({
   address: z.string().optional(),
   email: z.string().trim().pipe(z.email().toLowerCase()),
   password: z.string().min(1, { message: "Password is required" }),
+});
+
+export const IoTDataSchema = z.object({
+  sensorId: z.number(),
+  ObservationValue: z.number(),
 });
