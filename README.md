@@ -22,7 +22,7 @@ This is still work in progress
 - 'npm install'
 - spin up db with 'docker compose up'
 - run migrations: 'npx prisma migrate deploy'
-- start next.js app with: 'npm run dev' / 'npm run start'
+- start next.js app with: 'npm run dev'
 - set up .env file in mqtt folder, 'npm install', 'node server' (if you have broker like mosquitto set up)
 - if you only want to look at the next.js frontend: seed sample data with 'npm run prisma-seed' - username is admin@example.com/root OR
 - add sample data via db gui: 'npm run db-gui'
