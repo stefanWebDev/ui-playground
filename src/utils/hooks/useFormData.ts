@@ -1,7 +1,7 @@
 "use client";
 
+import { FormDataUser } from "@/types/types";
 import { useState } from "react";
-import { FormDataUser } from "../types/interface";
 
 type FormDataKey = keyof FormDataUser;
 
@@ -12,7 +12,7 @@ export function useFormData() {
   });
 
   function setField<K extends FormDataKey>(key: K, value: FormDataUser[K]) {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [key]: value,
     }));
