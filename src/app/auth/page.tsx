@@ -27,8 +27,8 @@ export default function Auth() {
         return "logout";
       case "logout":
         return "signin";
-      default:
-        return "signup";
+      case "signup":
+        return "signin";
     }
   })();
 

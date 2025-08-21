@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Prisma } from "@/generated/prisma/client";
 import { Dropdown } from "@/components/common/Dropdown";
 import { FancySpinner } from "@/components/common/FancySpinner";
 import { ObservationChart } from "@/components/custom/ObservationChart";
 import { NavLink } from "@/components/common/NavLink";
+import { useRouter } from "next/navigation";
 
 type IotDataResponse = {
   user: Prisma.UserGetPayload<{
@@ -28,12 +29,29 @@ type IotDataResponse = {
   }>;
 } | null;
 
+interface AuthResponseData {
+  message: string;
+  authenticated: boolean;
+}
+
 export default function Home() {
   const [selectedThingId, setSelectedThingId] = useState<string>("");
   const [selectedTopicId, setSelectedTopicId] = useState<string>("");
   const [selectedSensorId, setSelectedSensorId] = useState<string>("");
+  const router = useRouter();
 
-  const { data, isLoading, isError, error } = useQuery<IotDataResponse>({
+  const { data: authData, isLoading: isAuthLoading } = useQuery<AuthResponseData>({
+    queryKey: ["auth-check"],
+    queryFn: async () => {
+      const response = await fetch("/api/private");
+
+      if (!response.ok) return null;
+
+      return await response.json();
+    },
+  });
+
+  const { data, isLoading, error } = useQuery<IotDataResponse>({
     queryKey: ["iot-data"],
     queryFn: async () => {
       const response = await fetch("/api/private/iot-data");
@@ -44,6 +62,7 @@ export default function Home() {
 
       return await response.json();
     },
+    enabled: !isAuthLoading && !authData?.authenticated,
   });
 
   const things = data?.user?.things || [];
@@ -68,11 +87,17 @@ export default function Home() {
     setSelectedSensorId(e.target.value);
   };
 
-  if (isLoading) {
+  useEffect(() => {
+    if (authData?.authenticated === false) {
+      router.push("/auth");
+    }
+  }, [authData?.authenticated, router]);
+
+  if (isLoading || isAuthLoading) {
     return (
       <div className="font-sans p-8 flex flex-col gap-4 items-center justify-center min-h-screen">
         <FancySpinner size="lg" />
-        <p className="text-gray-600 animate-pulse">Loading IoT data...</p>
+        <p className="text-gray-600 animate-pulse text-[var(--color)]">Loading IoT data...</p>
       </div>
     );
   }
@@ -80,8 +105,16 @@ export default function Home() {
   if (error) {
     return (
       <div className="font-sans p-8 flex flex-col gap-4 items-center justify-center min-h-screen">
-        <p className="text-red-600">Error loading IoT data: {error.message} - are you logged in?</p>
+        <p className="text-red-600">Error loading IoT data: {error.message}</p>
         <NavLink href="/auth" label="Login" />
+      </div>
+    );
+  }
+
+  if (things.length === 0) {
+    return (
+      <div className="font-sans p-8 flex flex-col gap-4 items-center justify-center min-h-screen">
+        <p className="text-[var(--color)]">No IoT data available. Use dummy user or create data.</p>
       </div>
     );
   }
@@ -89,7 +122,7 @@ export default function Home() {
   return (
     <div className="font-sans p-8 flex flex-col gap-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-semibold opacity-80">IoT Data</h1>
+        <h1 className="text-2xl font-semibold opacity-80 text-[var(--color)]">IoT Data</h1>
       </div>
 
       <div className="flex gap-4">
