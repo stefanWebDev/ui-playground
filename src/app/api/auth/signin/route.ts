@@ -85,6 +85,7 @@ export async function POST(request: NextRequest) {
         email: user.email,
         surname: user.surname,
       },
+      signedIn: true,
     });
 
     response.cookies.set("accessToken", token, {

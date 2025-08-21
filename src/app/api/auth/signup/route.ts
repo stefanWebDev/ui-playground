@@ -12,7 +12,11 @@ export async function POST(request: NextRequest) {
     const parsed = FormDataUserSchema.safeParse(data);
 
     if (parsed.error) {
-      return NextResponse.json({ message: "Invalid data", error: "Validation failed", status: 400 });
+      return NextResponse.json({
+        message: "Invalid data",
+        error: "Validation failed",
+        status: 400,
+      });
     }
 
     const password = parsed.data?.password;
@@ -23,7 +27,7 @@ export async function POST(request: NextRequest) {
       data: { ...parsed.data, password: hashedPassword },
     });
 
-    return NextResponse.json({ message: "User created", user });
+    return NextResponse.json({ message: "User created", userId: user.id, signUp: true });
   } catch {
     return NextResponse.json({ message: "Invalid data", error: "Server error", status: 500 });
   }

@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import Input from "./Input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useFormData } from "@/utils/hooks/useFormData";
+import { useRouter } from "next/navigation";
 
 interface FormProps {
   type: AuthButtonType;
@@ -14,6 +15,7 @@ export const Form = ({ type, onSuccess }: FormProps) => {
   const [abortController, setAbortController] = useState<AbortController | null>(null);
   const [formData, setFormField] = useFormData();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const {
     mutate,
@@ -38,9 +40,11 @@ export const Form = ({ type, onSuccess }: FormProps) => {
       return response.json();
     },
     onSuccess: (data) => {
-      if (!data.error) {
-        queryClient.invalidateQueries({ queryKey: ["auth-check"] });
-        onSuccess?.();
+      if (data.error) return;
+      queryClient.invalidateQueries({ queryKey: ["auth-check"] });
+      onSuccess?.();
+      if (data.signedIn) {
+        router.push("/");
       }
     },
   });
