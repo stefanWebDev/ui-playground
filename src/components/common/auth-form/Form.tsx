@@ -93,7 +93,7 @@ export const Form = ({ type, onSuccess }: FormProps) => {
       onBlur={(e) => abortController && destroyDropShadow({ abortController, element: e.target })}
       onFocus={(e) => initShadow(e)}
       id={input}
-      type="text"
+      type={input === "password" ? "password" : "text"}
       onChange={(e) => setFormField(input, e.target.value)}
       label={input}
     />
