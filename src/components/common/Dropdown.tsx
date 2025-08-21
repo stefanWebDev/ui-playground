@@ -8,7 +8,7 @@ interface DropdownProps extends SelectHTMLAttributes<HTMLSelectElement> {
 export const Dropdown = ({ options, ...rest }: DropdownProps) => {
   return (
     <select
-      className="px-4 py-2 rounded border border-gray-300 focus:border-transparent text-gray-800 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] transition"
+      className="text-sm opacity-70 px-4 py-2 rounded border border-gray-300 focus:opacity-100 focus:border-transparent text-gray-800 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] transition"
       {...rest}
     >
       {options.map((option) => (
