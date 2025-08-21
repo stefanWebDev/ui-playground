@@ -97,7 +97,7 @@ export default function Home() {
     return (
       <div className="font-sans p-8 flex flex-col gap-4 items-center justify-center min-h-screen">
         <FancySpinner size="lg" />
-        <p className="text-gray-600 animate-pulse">Loading IoT data...</p>
+        <p className="text-gray-600 animate-pulse text-[var(--color)]">Loading IoT data...</p>
       </div>
     );
   }
@@ -111,10 +111,18 @@ export default function Home() {
     );
   }
 
+  if (things.length === 0) {
+    return (
+      <div className="font-sans p-8 flex flex-col gap-4 items-center justify-center min-h-screen">
+        <p className="text-[var(--color)]">No IoT data available. Use dummy user or create data.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="font-sans p-8 flex flex-col gap-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-semibold opacity-80">IoT Data</h1>
+        <h1 className="text-2xl font-semibold opacity-80 text-[var(--color)]">IoT Data</h1>
       </div>
 
       <div className="flex gap-4">
