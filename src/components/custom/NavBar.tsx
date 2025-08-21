@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Dropdown } from "@/components/common/Dropdown";
+import { useEffect, useState } from "react";
+import { NavLink } from "../common/NavLink";
 import { getCookie, setCookie } from "@/utils/helpers/cookie";
-import { NavLink } from "@/components/common/NavLink";
+import { Dropdown } from "../common/Dropdown";
 
-export default function ThemeColor() {
+export const NavBar = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [hydrated, setHydrated] = useState(false);
 
@@ -36,16 +36,19 @@ export default function ThemeColor() {
   if (!hydrated) return null;
 
   return (
-    <div className="font-sans p-8 flex flex-col gap-4 items-center">
-      <NavLink href="/" label="Back" />
-      <Dropdown
-        value={theme}
-        onChange={(e) => onChange((e.target as HTMLSelectElement).value as "light" | "dark")}
-        options={[
-          { value: "light", label: "light mode" },
-          { value: "dark", label: "dark mode" },
-        ]}
-      />
-    </div>
+    <nav className="absolute top-0 right-0 p-4 z-10">
+      <div className="flex items-center gap-4">
+        <NavLink href="/auth" label="Account" />
+
+        <Dropdown
+          value={theme}
+          onChange={(e) => onChange((e.target as HTMLSelectElement).value as "light" | "dark")}
+          options={[
+            { value: "light", label: "Light Mode" },
+            { value: "dark", label: "Dark Mode" },
+          ]}
+        />
+      </div>
+    </nav>
   );
-}
+};
