@@ -1,4 +1,5 @@
 import { Prisma } from "@/generated/prisma/client";
+import { useState, useMemo } from "react";
 
 type Observation = Prisma.ObservationGetPayload<object>;
 type Sensor = Prisma.SensorGetPayload<{
@@ -19,10 +20,32 @@ interface ChartData {
 }
 
 export const ObservationChart = ({ sensor, className = "" }: ObservationChartProps) => {
+  // Get date range from observations
+  const observationDates = sensor.observations.map(
+    (obs) => new Date(obs.created_at).toISOString().split("T")[0]
+  );
+  const minDate =
+    observationDates.length > 0
+      ? Math.min(...observationDates.map((d) => new Date(d).getTime()))
+      : Date.now();
+  const maxDate =
+    observationDates.length > 0
+      ? Math.max(...observationDates.map((d) => new Date(d).getTime()))
+      : Date.now();
+
+  const [startDate, setStartDate] = useState(new Date(minDate).toISOString().split("T")[0]);
+  const [endDate, setEndDate] = useState(new Date(maxDate).toISOString().split("T")[0]);
+
   const processObservations = (): ChartData[] => {
     const groupedByDate: Record<string, Observation[]> = {};
 
-    sensor.observations.forEach((obs) => {
+    // Filter observations by date range
+    const filteredObservations = sensor.observations.filter((obs) => {
+      const obsDate = new Date(obs.created_at).toISOString().split("T")[0];
+      return obsDate >= startDate && obsDate <= endDate;
+    });
+
+    filteredObservations.forEach((obs) => {
       const date = new Date(obs.created_at).toISOString().split("T")[0];
       if (!groupedByDate[date]) {
         groupedByDate[date] = [];
@@ -55,21 +78,120 @@ export const ObservationChart = ({ sensor, className = "" }: ObservationChartPro
       .sort((a, b) => a.date.localeCompare(b.date));
   };
 
-  const chartData = processObservations();
+  const chartData = useMemo(() => processObservations(), [sensor.observations, startDate, endDate]);
   const maxValue = Math.max(...chartData.map((d) => d.value), 1);
 
   if (chartData.length === 0) {
     return (
-      <div className={`p-4 text-center text-gray-500 ${className}`}>No observations available</div>
+      <div className={`p-4 ${className}`}>
+        <style jsx>{`
+          input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            opacity: 0.7;
+          }
+          input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+          }
+        `}</style>
+        <div className="flex gap-4 mb-4">
+          <div className="flex flex-col">
+            <label
+              htmlFor="start-date"
+              className="text-sm font-medium mb-1"
+              style={{ color: "var(--color)" }}
+            >
+              Start Date
+            </label>
+            <input
+              id="start-date"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              max={endDate}
+              className="px-3 py-2 border border-gray-300 rounded-md text-sm date-input"
+              style={{ colorScheme: "light", accentColor: "var(--color)" }}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label
+              htmlFor="end-date"
+              className="text-sm font-medium mb-1"
+              style={{ color: "var(--color)" }}
+            >
+              End Date
+            </label>
+            <input
+              id="end-date"
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              min={startDate}
+              className="px-3 py-2 border border-gray-300 rounded-md text-sm date-input"
+              style={{ colorScheme: "light", accentColor: "var(--color)" }}
+            />
+          </div>
+        </div>
+        <div className="p-4 text-center text-gray-500">
+          No observations available for selected date range
+        </div>
+      </div>
     );
   }
 
   return (
     <div className={`p-4 ${className}`}>
+      <style jsx>{`
+        input[type="date"]::-webkit-calendar-picker-indicator {
+          filter: invert(1);
+          opacity: 0.7;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+          opacity: 1;
+        }
+      `}</style>
       <h3 className="text-lg font-semibold mb-4">
         {sensor.model} -{" "}
         {sensor.value_type === "Digital" ? "Daily Activations" : `Daily Average (${sensor.unit})`}
       </h3>
+
+      <div className="flex gap-4 mb-4">
+        <div className="flex flex-col">
+          <label
+            htmlFor="start-date"
+            className="text-sm font-medium mb-1"
+            style={{ color: "var(--color)" }}
+          >
+            Start Date
+          </label>
+          <input
+            id="start-date"
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            max={new Date().toISOString().split("T")[0]}
+            className="px-3 py-2 border border-gray-300 rounded-md text-sm date-input"
+            style={{ colorScheme: "light", accentColor: "var(--color)" }}
+          />
+        </div>
+        <div className="flex flex-col">
+          <label
+            htmlFor="end-date"
+            className="text-sm font-medium mb-1"
+            style={{ color: "var(--color)" }}
+          >
+            End Date
+          </label>
+          <input
+            id="end-date"
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            max={new Date().toISOString().split("T")[0]}
+            className="px-3 py-2 border border-gray-300 rounded-md text-sm date-input"
+            style={{ colorScheme: "light", accentColor: "var(--color)" }}
+          />
+        </div>
+      </div>
 
       <div className="flex items-end space-x-2 h-64 border-b border-l border-gray-300">
         {chartData.map((data) => (
