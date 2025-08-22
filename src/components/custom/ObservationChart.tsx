@@ -20,7 +20,6 @@ interface ChartData {
 }
 
 export const ObservationChart = ({ sensor, className = "" }: ObservationChartProps) => {
-  // Get date range from observations
   const observationDates = sensor.observations.map(
     (obs) => new Date(obs.created_at).toISOString().split("T")[0]
   );
@@ -39,7 +38,6 @@ export const ObservationChart = ({ sensor, className = "" }: ObservationChartPro
   const processObservations = (): ChartData[] => {
     const groupedByDate: Record<string, Observation[]> = {};
 
-    // Filter observations by date range
     const filteredObservations = sensor.observations.filter((obs) => {
       const obsDate = new Date(obs.created_at).toISOString().split("T")[0];
       return obsDate >= startDate && obsDate <= endDate;
@@ -168,7 +166,7 @@ export const ObservationChart = ({ sensor, className = "" }: ObservationChartPro
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            max={new Date().toISOString().split("T")[0]}
+            min={new Date(minDate).toISOString().split("T")[0]}
             className="px-3 py-2 border border-gray-300 rounded-md text-sm date-input"
             style={{ colorScheme: "light", accentColor: "var(--color)" }}
           />
@@ -186,7 +184,7 @@ export const ObservationChart = ({ sensor, className = "" }: ObservationChartPro
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            max={new Date().toISOString().split("T")[0]}
+            max={new Date(maxDate).toISOString().split("T")[0]}
             className="px-3 py-2 border border-gray-300 rounded-md text-sm date-input"
             style={{ colorScheme: "light", accentColor: "var(--color)" }}
           />
